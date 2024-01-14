@@ -1,1 +1,0 @@
-RICH IS THE BEST
