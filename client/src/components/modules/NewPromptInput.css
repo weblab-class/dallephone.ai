@@ -1,0 +1,6 @@
+.NewPromptInput-input,
+.NewPromptInput-button {
+  font-family: "Open Sans";
+  font-size: 14px;
+  padding: var(--s) var(--m);
+}
