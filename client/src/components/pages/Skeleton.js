@@ -6,7 +6,7 @@ import "./Skeleton.css";
 import { NewPrompt } from "../modules/NewPromptInput";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
-const GOOGLE_CLIENT_ID = "FILL ME IN";
+const GOOGLE_CLIENT_ID = "235996742175-sitk3csm3imr5ccgfb06f9a0f5pbbmg4.apps.googleusercontent.com";
 
 const Skeleton = ({ userId, handleLogin, handleLogout }) => {
   return (
@@ -43,7 +43,7 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
           Check out this getting started guide
         </a>
       </GoogleOAuthProvider>
-      {/* <NewPrompt original="SDFASF" /> This is to test NewPrompt is working */}
+      <NewPrompt original="SDFASF" />
     </div>
   );
 };
