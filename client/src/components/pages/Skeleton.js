@@ -68,6 +68,7 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
       </form>
       <Dalle prompt={prompt} triggerFetch={triggerFetch} original="hi" />
       {/* <NewPrompt original="SDFASF" /> This is to test NewPrompt is working */}
+      <NewPrompt original="SDFASF" />
     </div>
   );
 };
