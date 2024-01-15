@@ -48,7 +48,7 @@ router.post("/initsocket", (req, res) => {
 router.post("/prompt", (req, res) => {
   const prompt = new Prompt({
     original: req.body.original,
-    creator: req.user._id,
+    //creator: req.user._id,
     content: req.body.content,
   });
   prompt.save().then((prompt) => res.send(prompt));
@@ -60,7 +60,6 @@ router.post("/image", (req, res) => {
     creator: req.user._id,
     content: req.body.content,
   });
-  console.log(image);
   image.save().then((image) => res.send(image));
 });
 
