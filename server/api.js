@@ -12,6 +12,7 @@ const express = require("express");
 // import models so we can interact with the database
 const User = require("./models/user");
 const Prompt = require("./models/prompt");
+const Image = require("./models/image");
 
 // import authentication library
 const auth = require("./auth");
@@ -53,10 +54,24 @@ router.post("/prompt", (req, res) => {
   prompt.save().then((prompt) => res.send(prompt));
 });
 
+router.post("/image", (req, res) => {
+  const image = new Image({
+    original: req.body.original,
+    creator: req.user._id,
+    content: req.body.content,
+  });
+  console.log(image);
+  image.save().then((image) => res.send(image));
+});
+
+router.get("/openaikey", (req, res) => {
+  res.send({key:process.env.REACT_APP_OPENAI_API_KEY});
+});
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   console.log(`API route not found: ${req.method} ${req.url}`);
   res.status(404).send({ msg: "API route not found" });
-});
+}); 
 
 module.exports = router;
