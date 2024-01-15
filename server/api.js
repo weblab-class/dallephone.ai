@@ -49,7 +49,6 @@ router.post("/prompt", (req, res) => {
     original: req.body.original,
     creator: req.user._id,
     content: req.body.content,
-    image: req.body.image,
   });
   prompt.save().then((prompt) => res.send(prompt));
 });
