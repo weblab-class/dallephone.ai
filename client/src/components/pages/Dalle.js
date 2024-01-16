@@ -41,10 +41,12 @@ const Dalle = ({prompt, triggerFetch, original, addNewImage}) => {
                   size: "1024x1024",
                 });
                 
-                setImageSrc(response.data[0].url);
-                console.log(imageSrc);
-                const body = { original: original, content: imageSrc };
-                post("/api/image", body).then((image) => {
+                const newImageSrc = response.data[0].url;
+                setImageSrc(newImageSrc);
+
+                // Now update the server after state has been updated
+                const body = { original: original, content: newImageSrc};
+                post("/api/image", body).then(() => {
                   addNewImage(prompt);
                 });
               } catch (error) {

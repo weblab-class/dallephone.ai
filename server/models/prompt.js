@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 
 const PromptSchema = new mongoose.Schema({
   original: String, // Original prompt id
-  //creator: String, // User id of creator
+  creator: String, // User id of creator
   content: String,
 });
 

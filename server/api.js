@@ -49,7 +49,7 @@ router.post("/initsocket", (req, res) => {
 router.post("/prompt", (req, res) => {
   const prompt = new Prompt({
     original: req.body.original,
-    //creator: req.user._id,
+    creator: req.user._id,
     content: req.body.content,
   });
   prompt.save().then((prompt) => res.send(prompt));
