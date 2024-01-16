@@ -5,8 +5,11 @@ const socketToUserMap = {}; // maps socket ID to user object
 
 const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
-const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
-
+const getSocketFromSocketID = (socketid) => {
+  console.log(io.sockets);
+  console.log(io.sockets.connected[socketid]);
+  return io.sockets.connected[socketid];
+};
 const addUser = (user, socket) => {
   const oldSocket = userToSocketMap[user._id];
   if (oldSocket && oldSocket.id !== socket.id) {

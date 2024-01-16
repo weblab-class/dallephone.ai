@@ -36,8 +36,9 @@ router.get("/whoami", (req, res) => {
 
 router.post("/initsocket", (req, res) => {
   // do nothing if user not logged in
-  if (req.user)
+  if (req.user) {
     socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
+  }
   res.send({});
 });
 
@@ -64,13 +65,13 @@ router.post("/image", (req, res) => {
 });
 
 router.get("/openaikey", (req, res) => {
-  res.send({key:process.env.REACT_APP_OPENAI_API_KEY});
+  res.send({ key: process.env.REACT_APP_OPENAI_API_KEY });
 });
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   console.log(`API route not found: ${req.method} ${req.url}`);
   res.status(404).send({ msg: "API route not found" });
-}); 
+});
 
 module.exports = router;
