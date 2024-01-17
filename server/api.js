@@ -64,6 +64,15 @@ router.post("/image", (req, res) => {
   image.save().then((image) => res.send(image));
 });
 
+router.get("/prompt", (req, res) => {
+  Prompt.find({original: req.query.original}).then((prompts) => {res.send(prompts)});
+});
+
+router.get("/image", (req, res) => {
+  Image.find({original: req.query.original}).then((images) => res.send(images));
+});
+
+
 router.get("/openaikey", (req, res) => {
   res.send({ key: process.env.REACT_APP_OPENAI_API_KEY });
 });
