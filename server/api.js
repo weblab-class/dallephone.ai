@@ -53,6 +53,8 @@ router.post("/prompt", (req, res) => {
     content: req.body.content,
   });
   prompt.save().then((prompt) => res.send(prompt));
+
+  socketManager.getIo().emit("promptEntered", prompt);
 });
 
 router.post("/image", (req, res) => {
@@ -75,6 +77,10 @@ router.get("/image", (req, res) => {
 
 router.get("/openaikey", (req, res) => {
   res.send({ key: process.env.REACT_APP_OPENAI_API_KEY });
+});
+
+router.get("/activeUsers", (req, res) => {
+  res.send({ activeUsers: socketManager.getAllConnectedUsers() });
 });
 
 // anything else falls to this "not found" case

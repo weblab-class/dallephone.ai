@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {get, post} from "../../utilities";
+import { get, post } from "../../utilities";
 import "./NewPromptInput.css";
 
 /**
@@ -55,8 +55,7 @@ const NewPrompt = (props) => {
     const body = { original: props.original, content: value };
     console.log(body);
     post("/api/prompt", body).then((prompt) => {
-      //props.addNewPrompt(prompt);
-      console.log(prompt);
+      props.addNewPrompt(prompt);
     });
   };
 
