@@ -5,6 +5,8 @@ import jwt_decode from "jwt-decode";
 
 import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
+import EndScreen from "./pages/EndScreen.js";
+import Test from "./pages/Test.js";
 
 import "../utilities.css";
 
@@ -44,6 +46,18 @@ const App = () => {
 
   return (
     <Routes>
+       <Route
+        path="/endscreen"
+        element={
+          <EndScreen />
+        }
+      />
+      <Route
+        path="/test"
+        element={
+          <Test />
+        }
+      />
       <Route
         path="/"
         element={
