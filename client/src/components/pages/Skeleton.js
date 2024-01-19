@@ -5,6 +5,7 @@ import "../../utilities.css";
 import "./Skeleton.css";
 import NewPrompt from "../modules/NewPromptInput";
 import Dalle from "../modules/Dalle";
+import Lobby from "../pages/Lobby";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "235996742175-sitk3csm3imr5ccgfb06f9a0f5pbbmg4.apps.googleusercontent.com";
@@ -68,6 +69,7 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
       <Dalle prompt={prompt} triggerFetch={triggerFetch} original="hi" />
       {/* <NewPrompt original="SDFASF" /> This is to test NewPrompt is working */}
       <NewPrompt original="SDFASF" />
+      <Lobby />
     </div>
   );
 };

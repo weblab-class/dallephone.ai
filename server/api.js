@@ -51,10 +51,19 @@ router.post("/prompt", (req, res) => {
     original: req.body.original,
     creator: req.user._id,
     content: req.body.content,
+    game_id: req.body.game_id,
   });
   prompt.save().then((prompt) => res.send(prompt));
+});
 
-  socketManager.getIo().emit("promptEntered", prompt);
+router.post("/prompt/original", (req, res) => {
+  const prompt = new Prompt({
+    original: req.user._id,
+    creator: req.user._id,
+    content: req.body.content,
+    game_id: req.body.game_id,
+  });
+  prompt.save().then((prompt) => res.send(prompt));
 });
 
 router.post("/image", (req, res) => {
@@ -75,7 +84,16 @@ router.get("/prompt/original", (req, res) => {
 router.get("/prompt/game", (req, res) => {
   // fetches all prompts with a given game_id
   Prompt.find({ game_id: req.query.game_id }).then((prompts) => {
-    console.log(prompts);
+    console.log("this log occurs at get(/prompt/game) api endpoint");
+    res.send(prompts);
+  });
+});
+
+router.get("/prompt/originalprompts", (req, res) => {
+  // fetches all prompts that are original prompts in the game
+  Prompt.find({
+    $and: [{ game_id: req.query.game_id }, { $expr: { $eq: ["$original", "$creator"] } }],
+  }).then((prompts) => {
     res.send(prompts);
   });
 });
@@ -89,7 +107,7 @@ router.get("/openaikey", (req, res) => {
 });
 
 router.get("/activeUsers", (req, res) => {
-  res.send({ activeUsers: socketManager.getAllConnectedUsers() });
+  res.send(socketManager.getAllConnectedUsers());
 });
 
 // anything else falls to this "not found" case

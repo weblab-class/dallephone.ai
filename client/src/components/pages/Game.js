@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { get, post } from "../../utilities";
+import React, { useState, useEffect } from "react";
+import { get, post } from "../../utilities.js";
 import NewPrompt from "../modules/NewPromptInput";
 import Dalle from "../modules/Dalle";
-import { useEffect } from "react/cjs/react.production.min";
 
 import { socket } from "../../client-socket.js";
 
@@ -26,7 +25,7 @@ const Game = ({ originalPrompts, playerNum, num_players }) => {
   const [currentOriginalPrompt, setCurrentOriginalPrompt] = useState(
     originalPrompts[(playerNum + 1) % num_players]
   ); // type: promptObj
-  const [imagePrompt, setImagePrompt] = useState(""); // previous prompt that displays current image to be guessed
+  const [imagePrompt, setImagePrompt] = useState(originalPrompts[0]); // previous prompt that displays current image to be guessed
   const [canPlay, setCanPlay] = useState(false); // checks if previous prompts image has displayed
   const [imageObjs, setImageObjs] = useState([]);
   const [promptObjs, setPromptObjs] = useState(originalPrompts);
@@ -35,17 +34,19 @@ const Game = ({ originalPrompts, playerNum, num_players }) => {
   useEffect(() => {
     setCanPlay(false);
     get("/api/prompt/original", { original: currentOriginalPrompt.original }).then((prompts) => {
-      setImagePrompt(prompts[images.length - 1]);
+      setImagePrompt(prompts[prompts.length - 1]);
       setCanPlay(true);
     });
   }, [currentOriginalPrompt]);
 
   const addNewPrompt = (prompt) => {
     if (prompt !== "") {
-      post("/api/prompt", { original: prompt, content: prompt }).then((prompt) => {
-        socket.emit("submitPrompt");
-        setPromptObjs([...promptObjs, prompt]);
-      });
+      post("/api/prompt", { original: currentOriginalPrompt.original, content: prompt }).then(
+        (prompt) => {
+          socket.emit("submitPrompt");
+          setPromptObjs([...promptObjs, prompt]);
+        }
+      );
     }
   };
 
@@ -56,12 +57,17 @@ const Game = ({ originalPrompts, playerNum, num_players }) => {
   socket.on("allPromptsSubmitted", () => {
     // update current original prompt, which rotates for everyone
     setCurrentOriginalPrompt(originalPrompts[(playerNum + 1) % num_players]);
+    console.log("originalPrompts", originalPrompts);
   });
+
+  // console log outputs to check if props are being passed correctly:
+  // console.log("playerNum", playerNum);
+  // console.log("num_players", num_players);
 
   return canPlay ? (
     <div>
       <Dalle
-        prompt={imagePrompt}
+        prompt={imagePrompt.content}
         triggerFetch={true} // should this be always true?
         original={imagePrompt.original}
         addNewImage={addNewImage}

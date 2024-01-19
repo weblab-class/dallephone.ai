@@ -37,7 +37,7 @@ module.exports = {
     io = require("socket.io")(http);
 
     io.on("connection", (socket) => {
-      console.log(`socket has connected ${socket.id}`); // Put submit prompt logic here
+      console.log(`socket has connected ${socket.id}`);
 
       activeUsers.add(socket.id);
 
@@ -45,14 +45,15 @@ module.exports = {
         activeUsers.delete(socket.id);
 
         if (activeUsers.size === 0) {
+          // once all players have submitted a prompt
           io.emit("allPromptsSubmitted");
-          activeUsers = new Set(io.sockets.sockets.keys());
+          activeUsers = new Set(Object.keys(io.sockets.sockets));
         }
       });
 
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
-        removeUser(user, socket); // put activeUsers line in here
+        removeUser(user, socket);
         activeUsers.delete(socket.id);
       });
     });

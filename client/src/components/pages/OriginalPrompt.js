@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Game from "./Game.js";
-import { post } from "../../utilities.js";
+import { get, post } from "../../utilities.js";
 import { socket } from "../../client-socket.js";
-import { set } from "mongoose";
-import { all } from "../../../../server/api.js";
+import user from "../../../../server/models/user.js";
 
 /**
  *
@@ -18,7 +17,7 @@ import { all } from "../../../../server/api.js";
  *
  * states passed:
  * @param {number} playerNum - player number of current user
- * @param {array} originalPrompts - array of prompt OBJECTS (not prompt ids!)
+ * @param {array} originalPrompts - object of prompt OBJECTS (not prompt ids!), maps index to prompt object
  */
 
 const OriginalPrompt = ({ user_indices, num_players, game_id }) => {
@@ -28,6 +27,8 @@ const OriginalPrompt = ({ user_indices, num_players, game_id }) => {
   const [playerNum, setPlayerNum] = useState(-1); // useState for playerNum
   const [gotPlayerNum, setGotPlayerNum] = useState(false); // useState for gotPlayerNum
   const [allPromptsSubmitted, setAllPromptsSubmitted] = useState(false);
+
+  // console.log("user_indices", user_indices);
 
   useEffect(() => {
     // Fetch user data inside useEffect
@@ -44,7 +45,7 @@ const OriginalPrompt = ({ user_indices, num_players, game_id }) => {
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent default form submission behavior
     if (prompt !== "") {
-      post("/api/prompt", { original: prompt, content: prompt }).then((prompt) => {
+      post("/api/prompt/original", { content: prompt, game_id: game_id }).then(() => {
         setEnteredPrompt(true);
         socket.emit("submitPrompt");
       });
@@ -52,8 +53,8 @@ const OriginalPrompt = ({ user_indices, num_players, game_id }) => {
   };
 
   socket.on("allPromptsSubmitted", () => {
-    get("/api/prompt/game", { game_id: { game_id } }).then((prompts) => {
-      setOriginalPrompts(prompts);
+    get("/api/prompt/originalprompts", { game_id: game_id }).then((prompts) => {
+      setOriginalPrompts([...prompts.values()]);
       setAllPromptsSubmitted(true);
     });
   });
