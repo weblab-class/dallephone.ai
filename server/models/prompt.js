@@ -9,6 +9,7 @@ const PromptSchema = new mongoose.Schema({
   original: String, // Original prompt id
   creator: String, // User id of creator
   content: String,
+  game_id: String,
 });
 
 // compile model from schema

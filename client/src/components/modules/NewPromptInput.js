@@ -62,4 +62,4 @@ const NewPrompt = (props) => {
   return <NewInput defaultText="Enter your guess!" onSubmit={addPrompt} />;
 };
 
-export { NewPrompt };
+export default NewPrompt;

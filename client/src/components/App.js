@@ -7,6 +7,7 @@ import NotFound from "./pages/NotFound.js";
 import Skeleton from "./pages/Skeleton.js";
 import EndScreen from "./pages/EndScreen.js";
 import Test from "./pages/Test.js";
+import Lobby from "./pages/Lobby.js";
 
 import "../utilities.css";
 
@@ -35,7 +36,7 @@ const App = () => {
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
       setUserId(user._id);
-      post("/api/initsocket", { socketid: socket.id }); 
+      post("/api/initsocket", { socketid: socket.id });
     });
   };
 
@@ -46,18 +47,9 @@ const App = () => {
 
   return (
     <Routes>
-       <Route
-        path="/endscreen"
-        element={
-          <EndScreen />
-        }
-      />
-      <Route
-        path="/test"
-        element={
-          <Test />
-        }
-      />
+      <Route path="/lobby" element={<Lobby />} />
+      <Route path="/endscreen" element={<EndScreen />} />
+      <Route path="/test" element={<Test />} />
       <Route
         path="/"
         element={

@@ -3,7 +3,7 @@ import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/goo
 
 import "../../utilities.css";
 import "./Skeleton.css";
-import { NewPrompt } from "../modules/NewPromptInput";
+import NewPrompt from "../modules/NewPromptInput";
 import Dalle from "../modules/Dalle";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID

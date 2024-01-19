@@ -1,5 +1,6 @@
-import { get, set } from "mongoose";
+import { get } from "../../utilities.js";
 import React, { useState, useEffect } from "react";
+import OriginalPrompt from "./OriginalPrompt.js";
 
 /**
  * Will need to get user ids of all players in the lobby from database
@@ -17,7 +18,7 @@ const Lobby = () => {
 
   useEffect(() => {
     get("/api/activeUsers").then((data) => {
-      setPlayers(data.activeUsers.keys().length);
+      setPlayers(data.activeUsers.length);
       setReadyToStart(true);
     });
   }, []);
