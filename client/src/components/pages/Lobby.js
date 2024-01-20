@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import OriginalPrompt from "./OriginalPrompt.js";
 import { socket } from "../../client-socket.js";
+import { useParams } from "react-router-dom";
 import { set } from "mongoose";
 
 /**
@@ -13,14 +14,14 @@ import { set } from "mongoose";
  *
  * States to pass:
  * @param {object} user_indices - object mapping user ids to player numbers
- * @param {string} game_id - id of the game
+ * @param {string} game_id - id of the game, 4 capital letters
  */
 
 const Lobby = () => {
   const [players, setPlayers] = useState(0);
   const [user_indices, setUserIndices] = useState({});
-
-  const game_id = "hi"; // (future) TODO: enter code to get or generate game id to pass on
+  
+  const { game_id } = useParams(); // Access game_id from the URL
 
   const getUsers = (data) => {
     for (let i = 0; i < data.activeUsers.length; i++) {
@@ -34,6 +35,9 @@ const Lobby = () => {
   if (players > 0) {
     if (Object.keys(user_indices).length === players)
       return <OriginalPrompt user_indices={user_indices} num_players={players} game_id={game_id} />;
+  }
+  else{
+    return <div>Waiting for players...</div>;
   }
 };
 

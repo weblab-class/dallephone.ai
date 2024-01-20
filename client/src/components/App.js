@@ -47,9 +47,6 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/lobby" element={<Lobby />} />
-      <Route path="/endscreen" element={<EndScreen />} />
-      <Route path="/test" element={<Test />} />
       <Route
         path="/"
         element={
@@ -61,6 +58,10 @@ const App = () => {
           />
         }
       />
+      <Route path="/lobby/:game_id" element={<Lobby />} />
+      <Route path="/endscreen" element={<EndScreen />} />
+      <Route path="/test" element={<Test />} />
+      
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

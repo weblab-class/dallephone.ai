@@ -13,6 +13,7 @@ const express = require("express");
 const User = require("./models/user");
 const Prompt = require("./models/prompt");
 const Image = require("./models/image");
+const GameId = require("./models/gameid");
 
 // import authentication library
 const auth = require("./auth");
@@ -108,6 +109,68 @@ router.get("/openaikey", (req, res) => {
 
 router.get("/activeUsers", (req, res) => {
   res.send(socketManager.getAllConnectedUsers());
+});
+
+//Update GameID of user
+router.post("/updateGameId", (req, res) => {
+  const userId = req.user._id; // Assuming you're getting the user's ID from the session
+  const newGameId = req.body.game_id;
+
+  User.findById(userId, (err, user) => {
+    if (err) {
+      res.status(500).send({ error: "Error finding user" });
+    } else if (!user) {
+      res.status(404).send({ error: "User not found" });
+    } else {
+      user.gameid = newGameId;
+      user.save((err, updatedUser) => {
+        if (err) {
+          res.status(500).send({ error: "Error updating user" });
+        } else {
+          res.send(updatedUser);
+        }
+      });
+    }
+  });
+});
+
+//Generate new game code
+const generateGameCode = () => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let result = '';
+  for (let i = 0; i < 4; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+};
+
+//Create new game schematics
+router.post("/createNewGame", async (req, res) => {
+  try {
+    let gameCode;
+    let isUnique = false;
+    while (!isUnique) {
+      gameCode = generateGameCode();
+      // Check if the gameCode is unique in your gameids collection
+      const exists = await GameId.findOne({ code: gameCode });
+      if (!exists) {
+        isUnique = true;
+      }
+    }
+
+    // Add the gameCode to the gameids collection and update the user's gameid
+    // Assuming GameId is your model for the gameids collection
+    const newGameId = new GameId({ code: gameCode, creator: req.user._id });
+    await newGameId.save();
+
+    // Update the user's gameid
+    await User.findByIdAndUpdate(req.user._id, { gameid: gameCode });
+
+    res.send({ gameCode });
+  } catch (error) {
+    console.error("Error creating new game:", error);
+    res.status(500).send({ error: "Error creating new game" });
+  }
 });
 
 // anything else falls to this "not found" case
