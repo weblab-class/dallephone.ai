@@ -22,7 +22,7 @@ const NewInput = (props) => {
   // called when the user hits submit button for the prompt
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.onSubmit && props.onSubmit(content);
+    props.onSubmit(content);
     setContent("");
   };
 

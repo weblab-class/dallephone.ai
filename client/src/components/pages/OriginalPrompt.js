@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Game from "./Game.js";
 import { get, post } from "../../utilities.js";
 import { socket } from "../../client-socket.js";
-import user from "../../../../server/models/user.js";
 
 /**
  *
@@ -26,9 +25,7 @@ const OriginalPrompt = ({ user_indices, num_players, game_id }) => {
   const [originalPrompts, setOriginalPrompts] = useState([]);
   const [playerNum, setPlayerNum] = useState(-1); // useState for playerNum
   const [gotPlayerNum, setGotPlayerNum] = useState(false); // useState for gotPlayerNum
-  const [allPromptsSubmitted, setAllPromptsSubmitted] = useState(false);
-
-  // console.log("user_indices", user_indices);
+  const [allPromptsSubmitted, setAllPromptsSubmitted] = useState(false); // useState for allPromptsSubmitted
 
   useEffect(() => {
     // Fetch user data inside useEffect
@@ -44,6 +41,7 @@ const OriginalPrompt = ({ user_indices, num_players, game_id }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent default form submission behavior
+
     if (prompt !== "") {
       post("/api/prompt/original", { content: prompt, game_id: game_id }).then(() => {
         setEnteredPrompt(true);
@@ -54,8 +52,8 @@ const OriginalPrompt = ({ user_indices, num_players, game_id }) => {
 
   socket.on("allPromptsSubmitted", () => {
     get("/api/prompt/originalprompts", { game_id: game_id }).then((prompts) => {
-      setOriginalPrompts([...prompts.values()]);
-      setAllPromptsSubmitted(true);
+      setOriginalPrompts(prompts);
+      setAllPromptsSubmitted(originalPrompts.length === 0);
     });
   });
 
@@ -64,7 +62,12 @@ const OriginalPrompt = ({ user_indices, num_players, game_id }) => {
   if (gotPlayerNum) {
     if (allPromptsSubmitted)
       return (
-        <Game originalPrompts={originalPrompts} num_players={num_players} playerNum={playerNum} />
+        <Game
+          originalPrompts={originalPrompts}
+          num_players={num_players}
+          playerNum={playerNum}
+          game_id={game_id}
+        />
       );
     else if (enteredPrompt) return <div>Waiting for other players to submit prompts...</div>;
     else {

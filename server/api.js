@@ -77,7 +77,9 @@ router.post("/image", (req, res) => {
 });
 
 router.get("/prompt/original", (req, res) => {
-  Prompt.find({ original: req.query.original }).then((prompts) => {
+  Prompt.find({
+    $and: [{ original: req.query.original }, { game_id: req.query.game_id }],
+  }).then((prompts) => {
     res.send(prompts);
   });
 });
@@ -136,8 +138,8 @@ router.post("/updateGameId", (req, res) => {
 
 //Generate new game code
 const generateGameCode = () => {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let result = '';
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let result = "";
   for (let i = 0; i < 4; i++) {
     result += characters.charAt(Math.floor(Math.random() * characters.length));
   }

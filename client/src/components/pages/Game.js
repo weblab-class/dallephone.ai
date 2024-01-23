@@ -11,6 +11,7 @@ import { socket } from "../../client-socket.js";
  * @param {array} originalPrompts - array of original PromptObjs
  * @param {number} playerNum - player number of current user
  * @param {number} num_players - number of players in the game
+ * @param {number} game_id - game_id
  *
  * States to pass:
  * @param {array} imageObjs - array of ALL imageObjs in the current thread
@@ -21,32 +22,42 @@ import { socket } from "../../client-socket.js";
  * pass as props to end screen as images, prompts, and original prompt lists
  */
 
-const Game = ({ originalPrompts, playerNum, num_players }) => {
+const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
   const [currentOriginalPrompt, setCurrentOriginalPrompt] = useState(
     originalPrompts[(playerNum + 1) % num_players]
   ); // type: promptObj
-  const [imagePrompt, setImagePrompt] = useState(originalPrompts[0]); // previous prompt that displays current image to be guessed
-  const [canPlay, setCanPlay] = useState(false); // checks if previous prompts image has displayed
+  const [currentIndex, setCurrentIndex] = useState((playerNum + 1) % num_players); // index of current original prompt in originalPrompts array
+  const [imagePrompt, setImagePrompt] = useState(undefined); // previous prompt that displays current image to be guessed
   const [imageObjs, setImageObjs] = useState([]);
   const [promptObjs, setPromptObjs] = useState(originalPrompts);
 
+  console.log("playerNum", playerNum);
+  console.log("numPlayers", num_players);
+  console.log("currentIndex", currentIndex);
+  console.log("currentOriginalPrompt", currentOriginalPrompt);
+  console.log("originalPrompts", originalPrompts);
+
   // Get previous prompt to use for currently displayed Dalle image:
   useEffect(() => {
-    setCanPlay(false);
-    get("/api/prompt/original", { original: currentOriginalPrompt.original }).then((prompts) => {
+    get("/api/prompt/original", {
+      original: currentOriginalPrompt.original,
+      game_id: game_id,
+    }).then((prompts) => {
+      console.log("prompts", prompts);
       setImagePrompt(prompts[prompts.length - 1]);
-      setCanPlay(true);
     });
   }, [currentOriginalPrompt]);
 
   const addNewPrompt = (prompt) => {
     if (prompt !== "") {
-      post("/api/prompt", { original: currentOriginalPrompt.original, content: prompt }).then(
-        (prompt) => {
-          socket.emit("submitPrompt");
-          setPromptObjs([...promptObjs, prompt]);
-        }
-      );
+      post("/api/prompt", {
+        original: currentOriginalPrompt.original,
+        content: prompt,
+        game_id: game_id,
+      }).then((prompt) => {
+        socket.emit("submitPrompt");
+        setPromptObjs([...promptObjs, prompt]); // maybe combine this to socket as callback?
+      });
     }
   };
 
@@ -56,15 +67,17 @@ const Game = ({ originalPrompts, playerNum, num_players }) => {
 
   socket.on("allPromptsSubmitted", () => {
     // update current original prompt, which rotates for everyone
-    setCurrentOriginalPrompt(originalPrompts[(playerNum + 1) % num_players]);
-    console.log("originalPrompts", originalPrompts);
+    const index = (currentIndex + 1) % num_players;
+    setCurrentOriginalPrompt(originalPrompts[index]);
+    setCurrentIndex(index); // how to make these run synchronously?
   });
 
   // console log outputs to check if props are being passed correctly:
   // console.log("playerNum", playerNum);
   // console.log("num_players", num_players);
+  if (typeof imagePrompt !== "undefined") console.log("THATS CRAZY BRO", imagePrompt);
 
-  return canPlay ? (
+  return typeof imagePrompt !== "undefined" ? (
     <div>
       <Dalle
         prompt={imagePrompt.content}
