@@ -52,6 +52,7 @@ const OriginalPrompt = ({ user_indices, num_players, game_id }) => {
     get("/api/prompt/originalprompts", { game_id: game_id }).then((prompts) => {
       setOriginalPrompts(prompts);
       setAllPromptsSubmitted(originalPrompts.length === 0);
+      if (allPromptsSubmitted) console.log(originalPrompts);
     });
   });
 
