@@ -24,14 +24,12 @@ const OriginalPrompt = ({ user_indices, num_players, game_id }) => {
   const [enteredPrompt, setEnteredPrompt] = useState(false); // useState for enteredPrompt
   const [originalPrompts, setOriginalPrompts] = useState([]);
   const [playerNum, setPlayerNum] = useState(-1); // useState for playerNum
-  const [gotPlayerNum, setGotPlayerNum] = useState(false); // useState for gotPlayerNum
   const [allPromptsSubmitted, setAllPromptsSubmitted] = useState(false); // useState for allPromptsSubmitted
 
   useEffect(() => {
     // Fetch user data inside useEffect
     get("/api/whoami").then((user) => {
       setPlayerNum(user_indices[user._id]); // Update state with setPlayerNum
-      setGotPlayerNum(true); // Update state with setGotPlayerNum
     });
   }, []); // Dependency array to control when the effect runs
 
@@ -59,7 +57,7 @@ const OriginalPrompt = ({ user_indices, num_players, game_id }) => {
 
   // implement to check that all players have submitted prompts
 
-  if (gotPlayerNum) {
+  if (playerNum !== -1) {
     if (allPromptsSubmitted)
       return (
         <Game
