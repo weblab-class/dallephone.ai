@@ -72,6 +72,7 @@ router.post("/image", (req, res) => {
     original: req.body.original,
     creator: req.user._id,
     content: req.body.content,
+    game_id: req.body.game_id,
   });
   image.save().then((image) => res.send(image));
 });
@@ -80,7 +81,7 @@ router.get("/prompt/original", (req, res) => {
   Prompt.find({
     $and: [{ original: req.query.original }, { game_id: req.query.game_id }],
   }).then((prompts) => {
-    res.send(prompts);
+    res.send(prompts.sort((a, b) => a.time - b.time));
   });
 });
 
@@ -88,7 +89,7 @@ router.get("/prompt/game", (req, res) => {
   // fetches all prompts with a given game_id
   Prompt.find({ game_id: req.query.game_id }).then((prompts) => {
     console.log("this log occurs at get(/prompt/game) api endpoint");
-    res.send(prompts);
+    res.send(prompts.sort((a, b) => a.time - b.time));
   });
 });
 
@@ -97,12 +98,20 @@ router.get("/prompt/originalprompts", (req, res) => {
   Prompt.find({
     $and: [{ game_id: req.query.game_id }, { $expr: { $eq: ["$original", "$creator"] } }],
   }).then((prompts) => {
-    res.send(prompts);
+    res.send(prompts.sort((a, b) => a.time - b.time));
   });
 });
 
 router.get("/image", (req, res) => {
-  Image.find({ original: req.query.original }).then((images) => res.send(images));
+  Image.find({ original: req.query.original }).then((images) =>
+    res.send(images.sort((a, b) => a.time - b.time))
+  );
+});
+
+router.get("/image/game", (req, res) => {
+  Image.find({ game_id: req.query.game_id }).then((images) =>
+    res.send(images.sort((a, b) => a.time - b.time))
+  );
 });
 
 router.get("/openaikey", (req, res) => {

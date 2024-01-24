@@ -51,15 +51,7 @@ const NewInput = (props) => {
  * @param {function} addNewPrompt - function to add prompt to database
  */
 const NewPrompt = (props) => {
-  const addPrompt = (value) => {
-    const body = { original: props.original, content: value };
-    console.log(body);
-    post("/api/prompt", body).then((prompt) => {
-      props.addNewPrompt(prompt);
-    });
-  };
-
-  return <NewInput defaultText="Enter your guess!" onSubmit={addPrompt} />;
+  return <NewInput defaultText="Enter your guess!" onSubmit={props.addNewPrompt} />;
 };
 
 export default NewPrompt;

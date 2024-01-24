@@ -38,7 +38,7 @@ module.exports = {
 
     io.on("connection", (socket) => {
       console.log(`socket has connected ${socket.id}`);
-
+      console.log("active users", userToSocketMap);
       activeUsers.add(socket.id);
 
       socket.on("submitPrompt", () => {

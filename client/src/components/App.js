@@ -36,7 +36,7 @@ const App = () => {
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
       setUserId(user._id);
-      post("/api/initsocket", { socketid: socket.id });
+      if (userId !== undefined) post("/api/initsocket", { socketid: socket.id });
     });
   };
 
@@ -61,7 +61,7 @@ const App = () => {
       <Route path="/lobby/:game_id" element={<Lobby />} />
       <Route path="/endscreen" element={<EndScreen />} />
       <Route path="/test" element={<Test />} />
-      
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

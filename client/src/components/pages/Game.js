@@ -4,6 +4,7 @@ import NewPrompt from "../modules/NewPromptInput";
 import Dalle from "../modules/Dalle";
 
 import { socket } from "../../client-socket.js";
+import EndScreen from "./EndScreen.js";
 
 /**
  *
@@ -31,11 +32,13 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
   const [imageObjs, setImageObjs] = useState([]);
   const [promptObjs, setPromptObjs] = useState(originalPrompts);
 
-  console.log("playerNum", playerNum);
-  console.log("numPlayers", num_players);
-  console.log("currentIndex", currentIndex);
-  console.log("currentOriginalPrompt", currentOriginalPrompt);
-  console.log("originalPrompts", originalPrompts);
+  useEffect(() => {
+    console.log("playerNum", playerNum);
+    console.log("numPlayers", num_players);
+    console.log("currentIndex", currentIndex);
+    console.log("currentOriginalPrompt", currentOriginalPrompt);
+    console.log("originalPrompts", originalPrompts);
+  }, []);
 
   // Get previous prompt to use for currently displayed Dalle image:
   useEffect(() => {
@@ -43,7 +46,6 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
       original: currentOriginalPrompt.original,
       game_id: game_id,
     }).then((prompts) => {
-      console.log("prompts", prompts);
       setImagePrompt(prompts[prompts.length - 1]);
     });
   }, [currentOriginalPrompt]);
@@ -54,15 +56,16 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
         original: currentOriginalPrompt.original,
         content: prompt,
         game_id: game_id,
-      }).then((prompt) => {
+      }).then((promptObj) => {
         socket.emit("submitPrompt");
-        setPromptObjs([...promptObjs, prompt]); // maybe combine this to socket as callback?
+        // setPromptObjs([...promptObjs, promptObj]); // maybe combine this to socket as callback?
       });
     }
   };
 
   const addNewImage = (image) => {
-    setImageObjs([...imageObjs, image]);
+    // setImageObjs([...imageObjs, image]);
+    return null;
   };
 
   socket.on("allPromptsSubmitted", () => {
@@ -75,25 +78,45 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
   // console log outputs to check if props are being passed correctly:
   // console.log("playerNum", playerNum);
   // console.log("num_players", num_players);
-  if (typeof imagePrompt !== "undefined") console.log("THATS CRAZY BRO", imagePrompt);
-
-  return typeof imagePrompt !== "undefined" ? (
-    <div>
-      <Dalle
-        prompt={imagePrompt.content}
-        triggerFetch={true} // should this be always true?
-        original={imagePrompt.original}
-        addNewImage={addNewImage}
-      />
-      <NewPrompt
-        defaultText="Enter a prompt"
-        original={imagePrompt.original}
-        addNewPrompt={addNewPrompt}
-      />
-    </div>
-  ) : (
-    <div>Waiting to retrieve your image...</div>
-  );
+  if (currentIndex !== playerNum) {
+    return typeof imagePrompt !== "undefined" ? (
+      <div>
+        <Dalle
+          prompt={imagePrompt.content}
+          triggerFetch={true} // should this be always true?
+          original={imagePrompt.original}
+          addNewImage={addNewImage}
+          game_id={game_id}
+        />
+        <NewPrompt
+          defaultText="Enter a prompt"
+          original={imagePrompt.original}
+          addNewPrompt={addNewPrompt}
+          game_id={game_id}
+        />
+      </div>
+    ) : (
+      <div>Waiting to retrieve your image...</div>
+    );
+  } else {
+    const ids = originalPrompts.map((prompt) => prompt.original);
+    // const expectedEntries = num_players * num_players;
+    // console.log("promptObjs", promptObjs);
+    // console.log("imageObjs", imageObjs);
+    return (
+      <div>
+        <Dalle
+          prompt={imagePrompt.content}
+          triggerFetch={true} // should this be always true?
+          original={imagePrompt.original}
+          addNewImage={addNewImage}
+          game_id={game_id}
+          shouldDisplay={false}
+        />
+        <EndScreen game_id={game_id} ids={ids} />;
+      </div>
+    );
+  }
 };
 
 export default Game;

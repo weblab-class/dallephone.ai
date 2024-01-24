@@ -10,6 +10,7 @@ const PromptSchema = new mongoose.Schema({
   creator: String, // User id of creator
   content: String,
   game_id: String,
+  time: { type: Date, default: Date.now },
 });
 
 // compile model from schema

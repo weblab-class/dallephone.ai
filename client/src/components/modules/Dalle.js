@@ -15,11 +15,13 @@ function getApiKey() {
  * @param {boolean} triggerFetch - helper variable, just makes sure we only generate one image (is set to false upon image generation)
  * @param {integer} original - id of which database of images this is a part of
  * @param {integer} addNewImage - adds image to a client-side array
+ * @param {string} game_id - game id
+ * @param {boolean} shouldDisplay - helper variable, just makes sure we only display one image (is set to false upon image generation)
  *
  * @param {string} imageSrc - ends up storing URL of our Dalle generated image
  */
 
-const Dalle = ({ prompt, triggerFetch, original, addNewImage }) => {
+const Dalle = ({ prompt, triggerFetch, original, addNewImage, game_id, shouldDisplay = true }) => {
   //Will change "image" variable into what Dalle generates from {prompt}
   console.log("DALLE PROMPT", prompt);
   const [imageSrc, setImageSrc] = useState("");
@@ -46,7 +48,7 @@ const Dalle = ({ prompt, triggerFetch, original, addNewImage }) => {
             setImageSrc(newImageSrc);
 
             // Now update the server after state has been updated
-            const body = { original: original, content: newImageSrc };
+            const body = { original: original, content: newImageSrc, game_id: game_id };
             post("/api/image", body).then((image) => {
               addNewImage(image);
             });
@@ -60,6 +62,10 @@ const Dalle = ({ prompt, triggerFetch, original, addNewImage }) => {
     }
   }, [prompt, triggerFetch]); //update imageSrc on prompt and triggerFetch input
 
-  return <div>{imageSrc && <img src={imageSrc} alt="Generated from DALL-E" />}</div>;
+  if (shouldDisplay) {
+    return <div>{imageSrc && <img src={imageSrc} alt="Generated from DALL-E" />}</div>;
+  } else {
+    return null;
+  }
 };
 export default Dalle;
