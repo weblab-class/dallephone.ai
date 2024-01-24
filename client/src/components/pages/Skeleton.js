@@ -16,7 +16,7 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
   const [prompt, setPrompt] = useState("");
   const [triggerFetch, setTriggerFetch] = useState(false);
   const navigate = useNavigate(); // For redirecting to the new game lobby
-  
+
   //Some dalle helper functions for
   const handleInputChange = (event) => {
     setPrompt(event.target.value);
@@ -27,11 +27,10 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
     setTriggerFetch(true);
   };
 
-
   //Reset game_id to #### when user logs in
   useEffect(() => {
     if (userId) {
-      const body={game_id: "####"};
+      const body = { game_id: "####" };
       // User is logged in, update their gameid
       post("/api/updateGameId", body);
     }
@@ -66,38 +65,7 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
         ) : (
           <GoogleLogin onSuccess={handleLogin} onError={(err) => console.log(err)} />
         )}
-        <h1>Good luck on your project :)</h1>
-        <h2> What you need to change in this skeleton</h2>
-        <ul>
-          <li>
-            Change the Frontend CLIENT_ID (Skeleton.js) to your team's CLIENT_ID (obtain this at
-            http://weblab.is/clientid)
-          </li>
-          <li>Change the Server CLIENT_ID to the same CLIENT_ID (auth.js)</li>
-          <li>
-            Change the Database SRV (mongoConnectionURL) for Atlas (server.js). You got this in the
-            MongoDB setup.
-          </li>
-          <li>Change the Database Name for MongoDB to whatever you put in the SRV (server.js)</li>
-        </ul>
-        <h2>How to go from this skeleton to our actual app</h2>
-        <a href="https://docs.google.com/document/d/110JdHAn3Wnp3_AyQLkqH2W8h5oby7OVsYIeHYSiUzRs/edit?usp=sharing">
-          Check out this getting started guide
-        </a>
       </GoogleOAuthProvider>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={prompt}
-          onChange={handleInputChange}
-          placeholder="Enter a prompt for DALL-E"
-        />
-        <button type="submit">Generate Image</button>
-      </form>
-      <Dalle prompt={prompt} triggerFetch={triggerFetch} original="hi" />
-      {/* <NewPrompt original="SDFASF" /> This is to test NewPrompt is working */}
-      <NewPrompt original="SDFASF" />
-      <Lobby />
       <button onClick={createNewGame}>Create New Game</button>
     </div>
   );

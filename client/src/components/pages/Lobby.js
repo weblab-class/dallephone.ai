@@ -32,9 +32,15 @@ const Lobby = () => {
   socket.on("activeUsers", getUsers);
 
   if (players > 0) {
-    if (Object.keys(user_indices).length === players)
+    if (Object.keys(user_indices).length === players) {
+      console.log("user indices", user_indices);
+      console.log("numplayers", players);
+      console.log("THIS HAS RUN BRO");
       return <OriginalPrompt user_indices={user_indices} num_players={players} game_id={game_id} />;
+    }
   } else {
+    console.log("user indices", user_indices);
+    console.log("numplayers", players);
     return <div>Waiting for players...</div>;
   }
 };
