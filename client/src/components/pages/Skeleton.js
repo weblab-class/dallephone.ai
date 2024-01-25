@@ -7,7 +7,9 @@ import "./Skeleton.css";
 import NewPrompt from "../modules/NewPromptInput";
 import Dalle from "../modules/Dalle";
 import Lobby from "../pages/Lobby";
+import JoinGameForm from "../modules/JoinGameForm";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { socket } from "../../client-socket.js";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "235996742175-sitk3csm3imr5ccgfb06f9a0f5pbbmg4.apps.googleusercontent.com";
@@ -27,10 +29,17 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
     setTriggerFetch(true);
   };
 
+  useEffect(() => {
+    if (userId!=undefined) {
+      // If the user is logged in, emit the leaveLobby event
+      socket.emit('leaveLobby', userId);
+    }
+  }, [userId]);
+
   //Reset game_id to #### when user logs in
   useEffect(() => {
-    if (userId) {
-      const body = { game_id: "####" };
+    if (userId!=undefined) {
+      const body={game_id: "####"};
       // User is logged in, update their gameid
       post("/api/updateGameId", body);
     }
@@ -67,6 +76,7 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
         )}
       </GoogleOAuthProvider>
       <button onClick={createNewGame}>Create New Game</button>
+      <JoinGameForm />
     </div>
   );
 };

@@ -8,6 +8,8 @@ const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
 
+lobbyUsers={};
+
 let activeUsers = new Set();
 
 const addUser = (user, socket) => {
@@ -51,11 +53,36 @@ module.exports = {
         }
       });
 
+      // Example event for a user joining the lobby
+      socket.on('joinLobby', (code) => {
+        const user = getUserFromSocketID(socket.id);
+        lobbyUsers[user._id] = code; // Add user to lobby
+        io.emit('lobbyUsersUpdate', { lobbyUsers }); // Emit updated list to all clients
+      });
+
+      // Example event for a user leaving the lobby
+      socket.on('leaveLobby', () => {
+        const user = getUserFromSocketID(socket.id);
+        delete lobbyUsers[user._id]; // Remove user from lobby
+        io.emit('lobbyUsersUpdate', { lobbyUsers }); // Emit updated list to all clients
+      });
+      
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
         removeUser(user, socket);
         activeUsers.delete(socket.id);
+
+        // Remove user from lobby if they were in it
+        for (let userId in lobbyUsers) {
+          if (lobbyUsers[userId] === user._id) {
+            delete lobbyUsers[userId];
+            break;
+          }
+        }
+        io.emit('lobbyUsersUpdate', { lobbyUsers }); // Emit updated list to all clients
       });
+
+      
     });
   },
 

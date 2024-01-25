@@ -8,6 +8,7 @@ import Skeleton from "./pages/Skeleton.js";
 import EndScreen from "./pages/EndScreen.js";
 import Test from "./pages/Test.js";
 import Lobby from "./pages/Lobby.js";
+import LobbyNotFound from "./pages/LobbyNotFound.js";
 
 import "../utilities.css";
 
@@ -58,6 +59,7 @@ const App = () => {
           />
         }
       />
+      <Route path="/lobbyNotFound" element={<LobbyNotFound />} />
       <Route path="/lobby/:game_id" element={<Lobby />} />
       <Route path="/endscreen" element={<EndScreen />} />
       <Route path="/test" element={<Test />} />

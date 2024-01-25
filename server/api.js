@@ -184,6 +184,20 @@ router.post("/createNewGame", async (req, res) => {
   }
 });
 
+// Get all game IDs
+router.get("/getGameIDs", (req, res) => {
+  GameId.find({}, 'code -_id') // Selects only the 'code' field and excludes '_id'
+    .then((gameIds) => {
+      // Extract just the game codes from the documents
+      const codes = gameIds.map(gameId => gameId.code);
+      res.send(codes);
+    })
+    .catch((error) => {
+      console.error("Error retrieving game IDs:", error);
+      res.status(500).send({ error: "Error retrieving game IDs" });
+    });
+});
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   console.log(`API route not found: ${req.method} ${req.url}`);
