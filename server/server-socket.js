@@ -56,14 +56,18 @@ module.exports = {
       // Example event for a user joining the lobby
       socket.on('joinLobby', (code) => {
         const user = getUserFromSocketID(socket.id);
-        lobbyUsers[user._id] = code; // Add user to lobby
+        if(user){
+          lobbyUsers[user._id] = code; // Add user to lobby
+        }
         io.emit('lobbyUsersUpdate', { lobbyUsers }); // Emit updated list to all clients
       });
 
       // Example event for a user leaving the lobby
       socket.on('leaveLobby', () => {
         const user = getUserFromSocketID(socket.id);
-        delete lobbyUsers[user._id]; // Remove user from lobby
+        if(user){
+          delete lobbyUsers[user._id]; // Remove user from lobby
+        }
         io.emit('lobbyUsersUpdate', { lobbyUsers }); // Emit updated list to all clients
       });
       
