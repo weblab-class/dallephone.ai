@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import OriginalPrompt from "./OriginalPrompt.js";
 import { socket } from "../../client-socket.js";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { get, post } from "../../utilities";
 
 /**
@@ -18,8 +18,8 @@ import { get, post } from "../../utilities";
  */
 
 const Lobby = () => {
-  const [players, setPlayers] = useState({});
   const [lobbyUsers, setLobbyUsers] = useState({}); // New state for tracking lobby users
+  const [numPlayers, setNumPlayers] = useState(0); // New state for tracking lobby users
   const { game_id } = useParams();
   const navigate = useNavigate();
 
@@ -43,12 +43,7 @@ const Lobby = () => {
 
     checkGameExistsAndUpdateUser();
 
-    const getUsers = (data) => {
-      setPlayers(data.activeUsers.sort((a, b) => b._id.localeCompare(a._id)));
-    };
-    socket.on("activeUsers", getUsers);
-
-    socket.emit('joinLobby', game_id)
+    socket.emit('joinLobby', {game_id: game_id, socket_id: socket.id})
     
     socket.on("lobbyUsersUpdate", (data) => {
       console.log("Received lobby users update:", data);
@@ -61,9 +56,6 @@ const Lobby = () => {
     });
     console.log("connected to socket");
   }, [game_id, navigate]);
-  
-  console.log({game_id});
-  console.log(lobbyUsers);
 
   // Function to render the list of online players
   const renderOnlinePlayers = () => {
@@ -81,12 +73,20 @@ const Lobby = () => {
     );
   };
 
+  console.log(lobbyUsers)
+  console.log(lobbyUsers['lobbyUsers'])
+  useEffect(() => {
+    if (lobbyUsers['lobbyUsers']){
+      setNumPlayers(Object.keys(lobbyUsers['lobbyUsers']).length);
+    }
+  }, [lobbyUsers]);
+
   return (
     <div>
-      {players > 0 ? (
+      {numPlayers > 0 ? (
         <>
           {renderOnlinePlayers()}
-          <OriginalPrompt user_indices={lobbyUsers} num_players={players} game_id={game_id} />
+          <OriginalPrompt num_players={numPlayers} game_id={game_id} />
         </>
       ) : (
         <div>Waiting for players...</div>

@@ -18,7 +18,7 @@ import { socket } from "../../client-socket.js";
  * @param {array} originalPrompts - object of prompt OBJECTS (not prompt ids!), maps index to prompt object
  */
 
-const OriginalPrompt = ({ players, game_id }) => {
+const OriginalPrompt = ({ num_players, game_id }) => {
   const [prompt, setPrompt] = useState("");
   const [enteredPrompt, setEnteredPrompt] = useState(false); // useState for enteredPrompt
   const [originalPrompts, setOriginalPrompts] = useState([]);
@@ -76,7 +76,7 @@ const OriginalPrompt = ({ players, game_id }) => {
       return (
         <Game
           originalPrompts={originalPrompts}
-          num_players={players.length}
+          num_players={num_players}
           playerNum={playerNum}
           game_id={game_id}
         />

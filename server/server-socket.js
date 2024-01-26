@@ -54,17 +54,17 @@ module.exports = {
       });
 
       // Example event for a user joining the lobby
-      socket.on('joinLobby', (code) => {
-        const user = getUserFromSocketID(socket.id);
+      socket.on('joinLobby', (props) => {
+        const user = getUserFromSocketID(props.socket_id);
         if(user){
-          lobbyUsers[user._id] = code; // Add user to lobby
+          lobbyUsers[user._id] = props.game_id; // Add user to lobby
         }
         io.emit('lobbyUsersUpdate', { lobbyUsers }); // Emit updated list to all clients
       });
 
       // Example event for a user leaving the lobby
-      socket.on('leaveLobby', () => {
-        const user = getUserFromSocketID(socket.id);
+      socket.on('leaveLobby', (props) => {
+        const user = getUserFromSocketID(props);
         if(user){
           delete lobbyUsers[user._id]; // Remove user from lobby
         }
@@ -78,7 +78,7 @@ module.exports = {
 
         // Remove user from lobby if they were in it
         for (let userId in lobbyUsers) {
-          if (lobbyUsers[userId] === user._id) {
+          if (user!=undefined && lobbyUsers[userId] === user._id) {
             delete lobbyUsers[userId];
             break;
           }

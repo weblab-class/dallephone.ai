@@ -30,11 +30,11 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
   };
 
   useEffect(() => {
-    if (userId!=undefined) {
+    if (socket.id!=undefined) {
       // If the user is logged in, emit the leaveLobby event
-      socket.emit('leaveLobby', userId);
+      socket.emit('leaveLobby', socket.id);
     }
-  }, [userId]);
+  }, [socket.id]);
 
   //Reset game_id to #### when user logs in
   useEffect(() => {
