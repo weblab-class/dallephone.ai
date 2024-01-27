@@ -21,6 +21,8 @@ const addUser = (user, socket) => {
     delete socketToUserMap[oldSocket.id];
   }
 
+  console.log("adding user, user", user);
+
   userToSocketMap[user._id] = socket;
   socketToUserMap[socket.id] = user;
   io.emit("activeUsers", { activeUsers: getAllConnectedUsers() });
@@ -53,10 +55,35 @@ module.exports = {
         }
       });
 
+      socket.on('getNumPlayers', (code) => {
+        // Filter the lobbyUsers to find users with the specified code
+        const numPlayersWithCode = Object.values(lobbyUsers).filter(userCode => userCode === code).length;
+    
+        // Emit the number of players with the specific code
+        io.emit('numPlayersUpdate', numPlayersWithCode);
+      });
+    
+      socket.on('checkHost', (props) => {
+        const user = getUserFromSocketID(props.socket_id);
+        const numPlayersWithCode = Object.values(lobbyUsers).filter(userCode => userCode == props.game_id).length;
+        if(user){
+          const isHost = (lobbyUsers[user._id] === props.game_id && numPlayersWithCode === 1);
+          socket.emit('assignHost', { isHost: isHost });
+        }
+      });
+
+      socket.on('startGame', (code) => {
+        io.emit('gameStarted', code)
+      });
+
       // Example event for a user joining the lobby
       socket.on('joinLobby', (props) => {
+        console.log("props", props)
         const user = getUserFromSocketID(props.socket_id);
+        console.log("user", user)
+        console.log("socket to user map", socketToUserMap)
         if(user){
+          console.log("in join lobby, user", user);
           lobbyUsers[user._id] = props.game_id; // Add user to lobby
         }
         io.emit('lobbyUsersUpdate', { lobbyUsers }); // Emit updated list to all clients
@@ -84,6 +111,10 @@ module.exports = {
           }
         }
         io.emit('lobbyUsersUpdate', { lobbyUsers }); // Emit updated list to all clients
+        
+        if (user){
+          user.gameid = '####';
+        }
       });
 
       

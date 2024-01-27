@@ -9,6 +9,7 @@ import EndScreen from "./pages/EndScreen.js";
 import Test from "./pages/Test.js";
 import Lobby from "./pages/Lobby.js";
 import LobbyNotFound from "./pages/LobbyNotFound.js";
+import GameScreen from "./pages/GameScreen.js";
 
 import "../utilities.css";
 
@@ -37,7 +38,7 @@ const App = () => {
     console.log(`Logged in as ${decodedCredential.name}`);
     post("/api/login", { token: userToken }).then((user) => {
       setUserId(user._id);
-      if (userId !== undefined) post("/api/initsocket", { socketid: socket.id });
+      post("/api/initsocket", { socketid: socket.id });
     });
   };
 
@@ -61,6 +62,7 @@ const App = () => {
       />
       <Route path="/lobbyNotFound" element={<LobbyNotFound />} />
       <Route path="/lobby/:game_id" element={<Lobby />} />
+      <Route path="/game/:game_id" element={<GameScreen />} />
       <Route path="/endscreen" element={<EndScreen />} />
       <Route path="/test" element={<Test />} />
 

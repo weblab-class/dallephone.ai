@@ -22,6 +22,8 @@ const Lobby = () => {
   const [numPlayers, setNumPlayers] = useState(0); // New state for tracking lobby users
   const { game_id } = useParams();
   const navigate = useNavigate();
+  const [isHost, setIsHost] = useState(false);
+
 
   useEffect(() => {
     const checkGameExistsAndUpdateUser = async () => {
@@ -43,7 +45,25 @@ const Lobby = () => {
 
     checkGameExistsAndUpdateUser();
 
+    socket.on("gameStarted", (code) => {
+      console.log(code)
+      if (code === game_id){
+        navigate(`/game/${game_id}`);
+      }
+    });
+
     socket.emit('joinLobby', {game_id: game_id, socket_id: socket.id})
+    
+    console.log(socket.id)
+    socket.emit("checkHost", {game_id: game_id, socket_id: socket.id});
+
+    socket.on("assignHost", (data) => {
+      if (data.isHost) {
+        console.log("I am the host");
+        setIsHost(true); // Set a state variable to track if the current user is the host
+      }
+    }, []);
+
     
     socket.on("lobbyUsersUpdate", (data) => {
       console.log("Received lobby users update:", data);
@@ -53,8 +73,15 @@ const Lobby = () => {
             <li key={userId}>Player {index + 1}: {userId}</li> // Render list item
           ))
       setLobbyUsers(data); // Update the lobbyUsers state
+
+      return() => {
+        socket.off("lobbyUsersUpdate");
+        socket.off("assignHost");
+        socket.off("gameStarted");
+        socket.off("checkHost");
+        socket.off("joinLobby");
+      }
     });
-    console.log("connected to socket");
   }, [game_id, navigate]);
 
   // Function to render the list of online players
@@ -73,8 +100,20 @@ const Lobby = () => {
     );
   };
 
-  console.log(lobbyUsers)
-  console.log(lobbyUsers['lobbyUsers'])
+  const renderStartGameButton = () => {
+    if (isHost) {
+      return (
+        <button onClick={handleStartGame}>Start Game</button>
+      );
+    }
+    return null;
+  };
+  
+  const handleStartGame = () => {
+    // Emit an event to the server to start the game
+    socket.emit('startGame', game_id);
+  };
+
   useEffect(() => {
     if (lobbyUsers['lobbyUsers']){
       setNumPlayers(Object.keys(lobbyUsers['lobbyUsers']).length);
@@ -86,7 +125,7 @@ const Lobby = () => {
       {numPlayers > 0 ? (
         <>
           {renderOnlinePlayers()}
-          <OriginalPrompt num_players={numPlayers} game_id={game_id} />
+          {renderStartGameButton()}
         </>
       ) : (
         <div>Waiting for players...</div>
