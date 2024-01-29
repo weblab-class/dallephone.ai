@@ -29,8 +29,6 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
   ); // type: promptObj
   const [currentIndex, setCurrentIndex] = useState((playerNum + 1) % num_players); // index of current original prompt in originalPrompts array
   const [imagePrompt, setImagePrompt] = useState(undefined); // previous prompt that displays current image to be guessed
-  const [imageObjs, setImageObjs] = useState([]);
-  const [promptObjs, setPromptObjs] = useState(originalPrompts);
 
   useEffect(() => {
     console.log("playerNum", playerNum);
@@ -80,20 +78,24 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
   // console.log("num_players", num_players);
   if (currentIndex !== playerNum) {
     return typeof imagePrompt !== "undefined" ? (
-      <div>
-        <Dalle
-          prompt={imagePrompt.content}
-          triggerFetch={true} // should this be always true?
-          original={imagePrompt.original}
-          addNewImage={addNewImage}
-          game_id={game_id}
-        />
-        <NewPrompt
-          defaultText="Enter a prompt"
-          original={imagePrompt.original}
-          addNewPrompt={addNewPrompt}
-          game_id={game_id}
-        />
+      <div className="flex justify-center flex-col items-center h-screen">
+        <div>
+          <Dalle
+            prompt={imagePrompt.content}
+            triggerFetch={true} // should this be always true?
+            original={imagePrompt.original}
+            addNewImage={addNewImage}
+            game_id={game_id}
+          />
+        </div>
+        <div>
+          <NewPrompt
+            defaultText="Enter a prompt"
+            original={imagePrompt.original}
+            addNewPrompt={addNewPrompt}
+            game_id={game_id}
+          />
+        </div>
       </div>
     ) : (
       <div>Waiting to retrieve your image...</div>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 import "../../utilities.css";
 import { get } from "../../utilities";
-import "./Skeleton.css";
 
 import EndScreen from "./EndScreen.js";
 

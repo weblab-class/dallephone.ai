@@ -3,7 +3,6 @@ import { GoogleOAuthProvider, GoogleLogin, googleLogout } from "@react-oauth/goo
 import { get, post } from "../../utilities";
 
 import "../../utilities.css";
-import "./Skeleton.css";
 import NewPrompt from "../modules/NewPromptInput";
 import Dalle from "../modules/Dalle";
 import Lobby from "../pages/Lobby";
@@ -30,16 +29,16 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
   };
 
   useEffect(() => {
-    if (socket.id!=undefined) {
+    if (socket.id != undefined) {
       // If the user is logged in, emit the leaveLobby event
-      socket.emit('leaveLobby', socket.id);
+      socket.emit("leaveLobby", socket.id);
     }
   }, [socket.id]);
 
   //Reset game_id to #### when user logs in
   useEffect(() => {
-    if (userId!=undefined) {
-      const body={game_id: "####"};
+    if (userId != undefined) {
+      const body = { game_id: "####" };
       // User is logged in, update their gameid
       post("/api/updateGameId", body);
     }

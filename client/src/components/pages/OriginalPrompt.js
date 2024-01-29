@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Game from "./Game.js";
 import { get, post } from "../../utilities.js";
 import { socket } from "../../client-socket.js";
+import submitbutton from "../img/white-submit-icon.png";
 
 /**
  *
@@ -53,7 +54,7 @@ const OriginalPrompt = ({ num_players, game_id }) => {
     get("/api/prompt/originalprompts", { game_id: game_id }).then((prompts) => {
       // console.log("all prompts received");
       // console.log(Object.keys(prompts));
-      // console.log("userID", typeof userID);
+      console.log("userID", userID);
       // console.log("creator type", typeof prompts[0].creator);
       // console.log(
       //   "filtered stuff",
@@ -84,13 +85,32 @@ const OriginalPrompt = ({ num_players, game_id }) => {
     else if (enteredPrompt) return <div>Waiting for other players to submit prompts...</div>;
     else {
       return (
-        <form onSubmit={handleSubmit}>
-          <label>
-            Prompt:
-            <input type="text" value={prompt} onChange={handleChange} />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
+        <div className="flex justify-center items-center h-screen w-screen">
+          <div className="flex flex-col items-center">
+            <div className="h-[120px]">
+              <div className="text-5xl">Write a quirky sentence!</div>
+            </div>
+            <form onSubmit={handleSubmit} className="flex justify-center">
+              <label>
+                <input
+                  placeholder="Enter a prompt!"
+                  type="text"
+                  className="shadow-lg shadow-slate-500/50 w-[600px] h-[64px] placeholder-center rounded-l-3xl border-y-2 border-l-2 border-emerald-700 text-emerald-950"
+                  style={{ textAlign: "center", fontSize: "1.7rem" }}
+                  value={prompt}
+                  onChange={handleChange}
+                />
+              </label>
+              <input
+                type="image"
+                src={submitbutton}
+                style={{ backgroundSize: "50% auto" }}
+                className="rounded-r-3xl hover:bg-blue-500 shadow-lg shadow-slate-500/50
+                bg-center bg-no-repeat bg-slate-500 w-[68px] h-[64px] transform hover:scale-105 transition duration-300 border-y-2 border-r-2 border-emerald-700"
+              />
+            </form>
+          </div>
+        </div>
       );
     }
   }

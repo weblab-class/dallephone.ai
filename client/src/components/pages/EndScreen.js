@@ -40,11 +40,11 @@ const EndScreen = ({ game_id, ids }) => {
           const filteredPrompts = Object.values(prompts).filter((prompt) => prompt.original === id);
           const filteredImages = Object.values(images).filter((image) => image.original === id);
 
-          console.log("prompts", prompts);
-          console.log("images", images);
-          console.log("ids", ids);
-          console.log("filtered prompts", filteredPrompts);
-          console.log("filtered images", filteredImages);
+          // console.log("prompts", prompts);
+          // console.log("images", images);
+          // console.log("ids", ids);
+          // console.log("filtered prompts", filteredPrompts);
+          // console.log("filtered images", filteredImages);
 
           return (
             <>
