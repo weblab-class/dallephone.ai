@@ -25,8 +25,14 @@ const JoinGameForm = ({ userId }) => {
       const res = await get("/api/getGameIDs");
       if (res.includes(gameCode)) {
         // Update user's gameId and redirect
-        await post("/api/updateGameId", { game_id: gameCode });
-        navigate(`/lobby/${gameCode}`);
+        const started = await get("/api/gameStatus", {game_id: gameCode});
+        if(started.gameStarted){
+          setError("Game already started");
+        }
+        else{
+          await post("/api/updateGameId", { game_id: gameCode });
+          navigate(`/lobby/${gameCode}`);
+        }
       } else {
         setError("Room not found");
       }

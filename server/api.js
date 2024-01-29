@@ -146,6 +146,21 @@ router.post("/updateGameId", (req, res) => {
   });
 });
 
+router.get("/gameStatus", (req, res) => {
+  GameId.findOne({ code: req.query.game_id }).then((game) => {
+    res.send(game)
+  }); 
+});
+
+router.post("/updateGameStatus", (req, res) => {
+  console.log(req.body.game_id)
+  GameId.findOne({ code: req.body.game_id }).then((game) => {
+    game.gameStarted = true
+    game.save()
+  });
+});
+
+
 //Generate new game code
 const generateGameCode = () => {
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -172,7 +187,7 @@ router.post("/createNewGame", async (req, res) => {
 
     // Add the gameCode to the gameids collection and update the user's gameid
     // Assuming GameId is your model for the gameids collection
-    const newGameId = new GameId({ code: gameCode, creator: req.user._id });
+    const newGameId = new GameId({ code: gameCode, creator: req.user._id, gameStarted: false});
     await newGameId.save();
 
     // Update the user's gameid
