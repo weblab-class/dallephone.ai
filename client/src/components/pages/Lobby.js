@@ -103,7 +103,7 @@ const Lobby = () => {
   // Function to render the list of online players
   const renderOnlinePlayers = () => {
     return (
-      <div className="p-4 bg-blue-200 rounded-lg">
+      <div className="p-4 bg-blue-200 rounded-lg mt-4">
         <h3 className="text-lg font-semibold text-emerald-900">Online Players:</h3>
         <ul className="list-disc list-inside">
           {Object.entries(lobbyUsers["lobbyUsers"])
@@ -145,8 +145,22 @@ const Lobby = () => {
     }
   }, [lobbyUsers]);
 
+  const headerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100px',
+    width: '100%',
+  };
+
+
   return (
+    
     <div className="lobby-container">
+      <div style={headerStyle}>
+        <span style={{ fontSize: '56px', marginTop: '100px' }}>DALL-E Phone</span>
+      </div>
+      
       {authenticated ? (
         numPlayers > 1 ? (
           <>
