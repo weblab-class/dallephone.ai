@@ -6,7 +6,6 @@ import { get, post } from "../../utilities";
 
 import "./Lobby.css";
 
-
 /**
  * Will need to get user ids of all players in the lobby from database
  * currently do not know how to do this, am just using dummy data right now
@@ -35,18 +34,14 @@ const Lobby = () => {
         if (!res.includes(game_id)) {
           navigate("/lobbyNotFound");
           return;
-        }
-        else{
-          const started = await get("/api/gameStatus", {game_id: game_id});
-          if (started.gameStarted){
+        } else {
+          const started = await get("/api/gameStatus", { game_id: game_id });
+          if (started.gameStarted) {
             navigate("/lobbyStarted");
-          }
-          else{
+          } else {
             setAuthenticated(true);
           }
         }
-        
-        
 
         await post("/api/updateGameId", { game_id: game_id });
       } catch (error) {
@@ -58,7 +53,7 @@ const Lobby = () => {
     checkGameExistsAndUpdateUser();
 
     socket.on("gameStarted", (code) => {
-      if (code === game_id){
+      if (code === game_id) {
         navigate(`/game/${game_id}`);
       }
     });
@@ -117,7 +112,7 @@ const Lobby = () => {
       </div>
     );
   };
-  
+
   const renderStartGameButton = () => {
     if (isHost) {
       return (
@@ -146,19 +141,20 @@ const Lobby = () => {
   }, [lobbyUsers]);
 
   const headerStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100px',
-    width: '100%',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100px",
+    width: "100%",
   };
 
-
   return (
-    
     <div className="lobby-container">
       <div style={headerStyle}>
         <span style={{ fontSize: '56px', marginTop: '100px' }}>DALL-E Phone</span>
+        <div style={{ backgroundColor: '#FF5733', color: 'white', padding: '10px', marginTop: '10px' }}>
+          Game ID: {game_id}
+        </div>
       </div>
 
       {authenticated ? (
