@@ -59,7 +59,7 @@ const JoinGameForm = ({ userId }) => {
           Join Game
         </button>
       </form>
-      {error && <p className="error text-red-500">{error}</p>}
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };
