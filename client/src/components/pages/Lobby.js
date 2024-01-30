@@ -158,14 +158,15 @@ const Lobby = () => {
 };
 
 const containerStyle = {
-    textAlign: 'center' // This centers the div in its container
+    textAlign: 'center', // This centers the div in its container
+    marginTop: '40px'
 };
 
 
   return (
     <div className="lobby-container">
       <div style={headerStyle}>
-        <span style={{ fontSize: '56px', marginTop: '170px' }}>DALL-E Phone</span>
+        <span style={{ fontSize: '56px', marginTop: '100px' }}>DALL-E Phone</span>
       </div>
       <div style={containerStyle}>
             <div style={divStyle}>
