@@ -7,7 +7,8 @@
   }
   
   .waiting-text {
-    font-size: 36px; /* Adjust the font size as needed */
+    margin-top: 20px;
+    font-size: 24px; /* Adjust the font size as needed */
     margin-bottom: 20px; /* Add space at the bottom */
   }
   
@@ -15,7 +16,7 @@
     width: 50px; /* Adjust the size of the wheel */
     height: 50px; /* Adjust the size of the wheel */
     border: 4px solid #ccc;
-    border-top: 4px solid #3498db;
+    border-top: 4px solid #000000;
     border-radius: 50%;
     animation: spin 1s linear infinite; /* Add the rotation animation */
   }
