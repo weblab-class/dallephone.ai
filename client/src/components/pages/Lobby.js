@@ -98,7 +98,7 @@ const Lobby = () => {
   // Function to render the list of online players
   const renderOnlinePlayers = () => {
     return (
-      <div className="p-4 bg-blue-200 rounded-lg mt-10">
+      <div className="p-4 bg-blue-200 rounded-lg mt-16">
         <h3 className="text-lg font-semibold text-emerald-900">Online Players:</h3>
         <ul className="list-disc list-inside">
           {Object.entries(lobbyUsers["lobbyUsers"])
@@ -165,7 +165,7 @@ const containerStyle = {
   return (
     <div className="lobby-container">
       <div style={headerStyle}>
-        <span style={{ fontSize: '56px', marginTop: '100px' }}>DALL-E Phone</span>
+        <span style={{ fontSize: '56px', marginTop: '170px' }}>DALL-E Phone</span>
       </div>
       <div style={containerStyle}>
             <div style={divStyle}>
