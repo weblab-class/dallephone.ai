@@ -103,7 +103,7 @@ const Lobby = () => {
   // Function to render the list of online players
   const renderOnlinePlayers = () => {
     return (
-      <div className="p-4 bg-blue-200 rounded-lg mt-6">
+      <div className="p-4 bg-blue-200 rounded-lg mt-10">
         <h3 className="text-lg font-semibold text-emerald-900">Online Players:</h3>
         <ul className="list-disc list-inside">
           {Object.entries(lobbyUsers["lobbyUsers"])
