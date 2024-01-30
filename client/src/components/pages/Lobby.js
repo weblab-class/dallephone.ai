@@ -103,7 +103,7 @@ const Lobby = () => {
   // Function to render the list of online players
   const renderOnlinePlayers = () => {
     return (
-      <div className="text-center p-4">
+      <div className="p-4">
         <h3 className="text-lg font-semibold text-emerald-900">Online Players:</h3>
         <ul className="list-disc list-inside">
           {Object.entries(lobbyUsers["lobbyUsers"])
@@ -124,7 +124,7 @@ const Lobby = () => {
         <div className="w-[400px] h-[40px] flex justify-center items-center h-screen">
           <button
             onClick={handleStartGame}
-            className="rounded-lg border-2 border-emerald-900 p-2 bg-white shadow-lg focus:outline-none hover:ring ring-blue-300"
+            className="text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-bold py-2 px-4 rounded shadow-md hover:shadow-lg transition duration-200"
           >
             Start Game
           </button>
