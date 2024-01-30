@@ -1,0 +1,27 @@
+.waiting-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+  }
+  
+  .waiting-text {
+    font-size: 36px; /* Adjust the font size as needed */
+    margin-bottom: 20px; /* Add space at the bottom */
+  }
+  
+  .waiting-wheel {
+    width: 50px; /* Adjust the size of the wheel */
+    height: 50px; /* Adjust the size of the wheel */
+    border: 4px solid #ccc;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite; /* Add the rotation animation */
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  

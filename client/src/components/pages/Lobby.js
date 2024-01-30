@@ -160,7 +160,7 @@ const Lobby = () => {
       <div style={headerStyle}>
         <span style={{ fontSize: '56px', marginTop: '100px' }}>DALL-E Phone</span>
       </div>
-      
+
       {authenticated ? (
         numPlayers > 1 ? (
           <>
@@ -168,7 +168,10 @@ const Lobby = () => {
             {renderStartGameButton()}
           </>
         ) : (
-          <div>Waiting for players...</div>
+          <div className="waiting-container">
+            <div className="waiting-text">Waiting for players...</div>
+            <div className="waiting-wheel"></div>
+          </div>
         )
       ) : (
         <></>
