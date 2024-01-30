@@ -51,7 +51,6 @@ const GameScreen = () => {
         <div>
             {authenticated ? (
                 <>
-                    <h1>Game Screen</h1>
                     <OriginalPrompt num_players={numPlayers} game_id={game_id} />
                 </>
             ) : (
