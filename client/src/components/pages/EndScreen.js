@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { get, post } from "../../utilities.js";
-import { bg, buttonStyle } from "./styles.js";
+import { bgStyle } from "./styles.js";
 
 import "../../utilities.css";
 import "./EndScreen.css";

@@ -79,7 +79,7 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
 
   const panelStyle = {
     display: "flex",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     alignItems: "center",
     marginTop: "150px",
   };
@@ -121,16 +121,16 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
       </div>
 
       {/* Panels Section */}
-      <div style={panelStyle}>
+      <div style={panelStyle} className="flex flex-wrap">
         {/* Create New Game Panel */}
-        <div>
+        <div className="border-4 w-1/4 p-4 mr-2">
           <button className={buttonStyle} onClick={createNewGame}>
             Create New Game
           </button>
         </div>
-
+        <div className="border-4 w-1/4 p-4">How to play</div>
         {/* Join Game Panel */}
-        <div>
+        <div className="border-4 w-1/4 p-4 ml-2">
           <JoinGameForm />
         </div>
       </div>
