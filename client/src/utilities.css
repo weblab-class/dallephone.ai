@@ -40,7 +40,7 @@ body {
   align-items: center;
   color: var(--dark);
 
-  background-image: linear-gradient(to right, var(--primary), var(--secondary));;
+  background-image: linear-gradient(to right, var(--primary), var(--secondary));
 }
 
 form {

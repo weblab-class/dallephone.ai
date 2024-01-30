@@ -11,8 +11,8 @@ import JoinGameForm from "../modules/JoinGameForm";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { socket } from "../../client-socket.js";
 
-import grid from '../../components/img/grid.svg';
-import logo from '../img/logo.jpg';
+import grid from "../../components/img/grid.svg";
+import logo from "../img/logo.jpg";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "235996742175-sitk3csm3imr5ccgfb06f9a0f5pbbmg4.apps.googleusercontent.com";
@@ -63,45 +63,44 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
 
   const bg = {
     backgroundImage: `url(${grid})`,
-    height: '100vh',
-    width: '100vw',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center'
-    };
-  
-  const headerStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100px',
-    width: '100%',
-  };
-  
-  const panelStyle = {
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop: '150px',
-  };
-  
-  const buttonStyle = 'text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-bold py-2 px-4 rounded shadow-md hover:shadow-lg transition duration-200';
-  
-  const googleButtonContainerStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '60px',
+    height: "100vh",
+    width: "100vw",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
   };
 
-  
+  const headerStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100px",
+    width: "100%",
+  };
+
+  const panelStyle = {
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginTop: "150px",
+  };
+
+  const buttonStyle =
+    "text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-700 hover:to-purple-700 py-2 px-4 rounded shadow-md hover:shadow-lg transition duration-200 border-2 border-emerald-900 border-opacity-50";
+
+  const googleButtonContainerStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "60px",
+  };
+
   // Website Frontend
   return (
     <div style={bg}>
       {/* Header Section */}
       <div style={headerStyle}>
-        <span style={{ fontSize: '56px', marginTop: '100px' }}>DALL-E Phone</span>
+        <span style={{ fontSize: "56px", marginTop: "100px" }}>DALL-E Phone</span>
       </div>
-
 
       <div style={googleButtonContainerStyle}>
         <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
@@ -121,8 +120,6 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
         </GoogleOAuthProvider>
       </div>
 
-
-  
       {/* Panels Section */}
       <div style={panelStyle}>
         {/* Create New Game Panel */}
@@ -131,7 +128,7 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
             Create New Game
           </button>
         </div>
-  
+
         {/* Join Game Panel */}
         <div>
           <JoinGameForm />
@@ -139,10 +136,6 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
       </div>
     </div>
   );
-    
-
-  
 };
 
 export default Skeleton;
-

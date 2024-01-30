@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { get, post } from "../../utilities.js";
 import NewPrompt from "../modules/NewPromptInput";
 import Dalle from "../modules/Dalle";
+import { bgStyle } from "./styles.js";
 
 import { socket } from "../../client-socket.js";
 import EndScreen from "./EndScreen.js";
@@ -29,6 +30,7 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
   ); // type: promptObj
   const [currentIndex, setCurrentIndex] = useState((playerNum + 1) % num_players); // index of current original prompt in originalPrompts array
   const [imagePrompt, setImagePrompt] = useState(undefined); // previous prompt that displays current image to be guessed
+  const [enteredPrompt, setEnteredPrompt] = useState(false); // useState for enteredPrompt
 
   useEffect(() => {
     console.log("playerNum", playerNum);
@@ -56,6 +58,7 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
         game_id: game_id,
       }).then((promptObj) => {
         socket.emit("submitPrompt");
+        setEnteredPrompt(true);
         // setPromptObjs([...promptObjs, promptObj]); // maybe combine this to socket as callback?
       });
     }
@@ -78,7 +81,7 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
   // console.log("num_players", num_players);
   if (currentIndex !== playerNum) {
     return typeof imagePrompt !== "undefined" ? (
-      <div className="flex justify-center flex-col items-center h-screen">
+      <div style={bgStyle} className="flex justify-center flex-col items-center h-screen">
         <div>
           <Dalle
             prompt={imagePrompt.content}
@@ -94,11 +97,14 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
             original={imagePrompt.original}
             addNewPrompt={addNewPrompt}
             game_id={game_id}
+            enteredPrompt={enteredPrompt}
           />
         </div>
       </div>
     ) : (
-      <div>Waiting to retrieve your image...</div>
+      <div style={bgStyle} className="text-center text-2xl">
+        Waiting to retrieve your image...
+      </div>
     );
   } else {
     const ids = originalPrompts.map((prompt) => prompt.original);
@@ -106,7 +112,7 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
     // console.log("promptObjs", promptObjs);
     // console.log("imageObjs", imageObjs);
     return (
-      <div>
+      <div style={bgStyle} className="p-8 flex justify-center items-center h-full">
         <Dalle
           prompt={imagePrompt.content}
           triggerFetch={true} // should this be always true?

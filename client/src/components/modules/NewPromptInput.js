@@ -27,13 +27,13 @@ const NewInput = (props) => {
   };
 
   return (
-    <div className="flex justify-center p-8">
+    <div className="flex justify-center p-2">
       <input
         type="text"
         placeholder={props.defaultText}
         value={content}
         onChange={handleChange}
-        className="shadow-lg shadow-slate-500/50 w-[532px] h-[64px] placeholder-center rounded-l-3xl border-y-2 border-l-2 border-emerald-700 text-emerald-950"
+        className="shadow-lg shadow-slate-500/50 w-[512px] h-[64px] placeholder-center rounded-l-3xl border-y-2 border-l-2 border-emerald-700 text-emerald-950"
         style={{ textAlign: "center", fontSize: "1.7rem" }}
       />
       <button
@@ -56,9 +56,14 @@ const NewInput = (props) => {
  * @param {string} defaultText - placeholder text for input field
  * @param {string} original - original prompt id
  * @param {function} addNewPrompt - function to add prompt to database
+ * @param {boolean} enteredPrompt - whether prompt was submitted or not
  */
 const NewPrompt = (props) => {
-  return <NewInput defaultText="Enter your guess!" onSubmit={props.addNewPrompt} />;
+  return props.enteredPrompt ? (
+    <div className="text-center text-lg">Waiting for others to submit prompts</div>
+  ) : (
+    <NewInput defaultText="Enter your guess!" onSubmit={props.addNewPrompt} />
+  );
 };
 
 export default NewPrompt;
