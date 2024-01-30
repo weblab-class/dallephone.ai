@@ -42,18 +42,24 @@ const JoinGameForm = ({ userId }) => {
     }
   };
 
+  const inputStyle = 'border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none';
+  const buttonStyle = 'text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-bold py-2 px-4 rounded shadow-md hover:shadow-lg transition duration-200';
+
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex items-center justify-center mt-4">
         <input
           type="text"
           value={gameCode}
           onChange={handleInputChange}
           placeholder="Enter Game Code"
+          className={inputStyle}
         />
-        <button type="submit">Join Game</button>
+        <button type="submit" className={buttonStyle}>
+          Join Game
+        </button>
       </form>
-      {error && <p className="error">{error}</p>}
+      {error && <p className="error text-red-500">{error}</p>}
     </div>
   );
 };
