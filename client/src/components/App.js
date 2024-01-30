@@ -49,27 +49,28 @@ const App = () => {
   };
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <Skeleton
-            path="/"
-            handleLogin={handleLogin}
-            handleLogout={handleLogout}
-            userId={userId}
-          />
-        }
-      />
-      <Route path="/lobbyNotFound" element={<LobbyNotFound />} />
-      <Route path="/lobbyStarted" element={<LobbyStarted />} />
-      <Route path="/lobby/:game_id" element={<Lobby />} />
-      <Route path="/game/:game_id" element={<GameScreen />} />
-      <Route path="/endscreen" element={<EndScreen />} />
-      <Route path="/test" element={<Test />} />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Skeleton
+              path="/"
+              handleLogin={handleLogin}
+              handleLogout={handleLogout}
+              userId={userId}
+            />
+          }
+        />
+        <Route path="/lobbyNotFound" element={<LobbyNotFound />} />
+        <Route path="/lobbyStarted" element={<LobbyStarted />} />
+        <Route path="/lobby/:game_id" element={<Lobby />} />
+        <Route path="/game/:game_id" element={<GameScreen />} />
+        <Route path="/endscreen" element={<EndScreen />} />
+        <Route path="/test" element={<Test />} />
 
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
   );
 };
 

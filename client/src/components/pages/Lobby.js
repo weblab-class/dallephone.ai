@@ -5,6 +5,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { get, post } from "../../utilities";
 import { bgStyle, buttonClass } from "./styles.js";
 
+import "./Lobby.css";
+
 /**
  * Will need to get user ids of all players in the lobby from database
  * currently do not know how to do this, am just using dummy data right now
@@ -97,15 +99,18 @@ const Lobby = () => {
   // Function to render the list of online players
   const renderOnlinePlayers = () => {
     return (
-      <div>
-        <h3>Online Players:</h3>
-        <ul>
-          {Object.entries(lobbyUsers["lobbyUsers"]) // Convert object to array of [userId, gameId]
-            .filter(([userName, gameId]) => gameId === game_id) // Corrected filter condition
+      <div
+        className="p-4 bg-blue-200 rounded-lg mt-16"
+        style={{ maxHeight: "400px", overflowY: "auto" }}
+      >
+        <h3 className="text-lg font-semibold text-emerald-900">Online Players:</h3>
+        <ul className="list-disc list-inside">
+          {Object.entries(lobbyUsers["lobbyUsers"])
+            .filter(([userName, gameId]) => gameId === game_id)
             .map(([userName, gameId], index) => (
-              <li key={userName}>
+              <li key={userName} className="text-md text-gray-700">
                 Player {index + 1}: {userName}
-              </li> // Render list item
+              </li>
             ))}
         </ul>
       </div>
@@ -136,8 +141,37 @@ const Lobby = () => {
     }
   }, [lobbyUsers]);
 
+  const headerStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100px",
+    width: "100%",
+  };
+
+  const divStyle = {
+    backgroundColor: "#FF5733",
+    color: "white",
+    padding: "10px",
+    marginTop: "10px",
+    display: "inline-block", // This makes the div size fit its content
+    textAlign: "center", // Center the text inside the div
+  };
+
+  const containerStyle = {
+    textAlign: "center", // This centers the div in its container
+    marginTop: "40px",
+  };
+
   return (
-    <div style={bgStyle} className="flex flex-col justify-center items-center h-screen w-screen">
+    <div className="lobby-container">
+      <div style={headerStyle}>
+        <span style={{ fontSize: "56px", marginTop: "100px" }}>DALL-E Phone</span>
+      </div>
+      <div style={containerStyle}>
+        <div style={divStyle}>Game ID: {game_id}</div>
+      </div>
+
       {authenticated ? (
         numPlayers > 1 ? (
           <>

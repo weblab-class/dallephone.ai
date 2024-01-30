@@ -13,6 +13,8 @@ import { socket } from "../../client-socket.js";
 
 import grid from "../../components/img/grid.svg";
 import logo from "../img/logo.jpg";
+import grid from "../../components/img/grid.svg";
+import logo from "../img/logo.jpg";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "235996742175-sitk3csm3imr5ccgfb06f9a0f5pbbmg4.apps.googleusercontent.com";
