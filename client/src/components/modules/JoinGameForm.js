@@ -25,11 +25,10 @@ const JoinGameForm = ({ userId }) => {
       const res = await get("/api/getGameIDs");
       if (res.includes(gameCode)) {
         // Update user's gameId and redirect
-        const started = await get("/api/gameStatus", {game_id: gameCode});
-        if(started.gameStarted){
+        const started = await get("/api/gameStatus", { game_id: gameCode });
+        if (started.gameStarted) {
           setError("Game already started");
-        }
-        else{
+        } else {
           await post("/api/updateGameId", { game_id: gameCode });
           navigate(`/lobby/${gameCode}`);
         }
@@ -42,12 +41,14 @@ const JoinGameForm = ({ userId }) => {
     }
   };
 
-  const inputStyle = 'border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none';
-  const buttonStyle = 'text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-bold py-2 px-4 rounded shadow-md hover:shadow-lg transition duration-200';
+  const inputStyle =
+    "border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none";
+  const buttonStyle =
+    "text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-bold py-2 px-4 rounded shadow-md hover:shadow-lg transition duration-200";
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="flex items-center justify-center mt-4">
+      <form onSubmit={handleSubmit} className="flex items-center justify-center">
         <input
           type="text"
           value={gameCode}
