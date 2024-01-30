@@ -163,10 +163,15 @@ const containerStyle = {
     marginTop: '40px'
 };
 
+const navigateHome = () => {
+  navigate('/');
+};
+
+
 
   return (
     <div className="lobby-container">
-      <div style={headerStyle}>
+      <div style={headerStyle} onClick={navigateHome}>
         <span style={{ fontSize: '56px', marginTop: '100px' }}>DALL-E Phone</span>
       </div>
       <div style={containerStyle}>
