@@ -148,14 +148,31 @@ const Lobby = () => {
     width: "100%",
   };
 
+  const divStyle = {
+    backgroundColor: '#FF5733',
+    color: 'white',
+    padding: '10px',
+    marginTop: '10px',
+    display: 'inline-block', // This makes the div size fit its content
+    textAlign: 'center' // Center the text inside the div
+};
+
+const containerStyle = {
+    textAlign: 'center' // This centers the div in its container
+};
+
+
   return (
     <div className="lobby-container">
       <div style={headerStyle}>
         <span style={{ fontSize: '56px', marginTop: '100px' }}>DALL-E Phone</span>
       </div>
-      <div style={{ backgroundColor: '#FF5733', color: 'white', padding: '10px', marginTop: '10px' }}>
-          Game ID: {game_id}
-      </div>
+      <div style={containerStyle}>
+            <div style={divStyle}>
+                Game ID: {game_id}
+            </div>
+        </div>
+
 
       {authenticated ? (
         numPlayers > 1 ? (
