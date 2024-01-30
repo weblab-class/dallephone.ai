@@ -93,6 +93,8 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
     marginTop: '60px',
   };
 
+
+
   
   // Website Frontend
   return (
@@ -137,7 +139,10 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
           <JoinGameForm />
         </div>
       </div>
+
     </div>
+
+    
   );
     
 

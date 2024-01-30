@@ -1,0 +1,21 @@
+@keyframes wave-animation {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .wave-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+    height: 150px; /* Adjust the height as needed */
+  }
+  
+  .wave {
+    position: absolute;
+    width: 200%; /* Ensures a smooth animation */
+    height: 100%;
+    background: black;
+    animation: wave-animation 30s linear infinite;
+  }
+  

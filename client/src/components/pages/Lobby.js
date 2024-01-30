@@ -4,6 +4,9 @@ import { socket } from "../../client-socket.js";
 import { useParams, useNavigate } from "react-router-dom";
 import { get, post } from "../../utilities";
 
+import "./Lobby.css";
+
+
 /**
  * Will need to get user ids of all players in the lobby from database
  * currently do not know how to do this, am just using dummy data right now
@@ -100,15 +103,15 @@ const Lobby = () => {
   // Function to render the list of online players
   const renderOnlinePlayers = () => {
     return (
-      <div>
-        <h3>Online Players:</h3>
-        <ul>
-          {Object.entries(lobbyUsers["lobbyUsers"]) // Convert object to array of [userId, gameId]
-            .filter(([userName, gameId]) => gameId === game_id) // Corrected filter condition
+      <div className="text-center p-4">
+        <h3 className="text-lg font-semibold text-emerald-900">Online Players:</h3>
+        <ul className="list-disc list-inside">
+          {Object.entries(lobbyUsers["lobbyUsers"])
+            .filter(([userName, gameId]) => gameId === game_id)
             .map(([userName, gameId], index) => (
-              <li key={userName}>
+              <li key={userName} className="text-md text-gray-700">
                 Player {index + 1}: {userName}
-              </li> // Render list item
+              </li>
             ))}
         </ul>
       </div>
@@ -143,7 +146,7 @@ const Lobby = () => {
   }, [lobbyUsers]);
 
   return (
-    <div>
+    <div className="lobby-container">
       {authenticated ? (
         numPlayers > 1 ? (
           <>
