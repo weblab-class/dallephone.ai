@@ -6,7 +6,6 @@ import { bgStyle, buttonClass } from "./styles.js";
 
 import "./Lobby.css";
 
-
 /**
  * Will need to get user ids of all players in the lobby from database
  * currently do not know how to do this, am just using dummy data right now
@@ -69,16 +68,15 @@ const Lobby = () => {
         navigate(`/game/${game_id}`);
       }
     });
-    
+
     socket.emit("joinLobby", { game_id: game_id, socket_id: socket.id });
 
     socket.on("assignHost", (data) => {
-        if (data.game_id == game_id) {
-          console.log("I am the host");
-          setIsHost(true); // Set a state variable to track if the current user is the host
-        }
+      if (data.game_id == game_id) {
+        console.log("I am the host");
+        setIsHost(true); // Set a state variable to track if the current user is the host
       }
-    );
+    });
 
     socket.on("lobbyUsersUpdate", (data) => {
       setLobbyUsers(data); // Update the lobbyUsers state
@@ -97,7 +95,7 @@ const Lobby = () => {
   const renderOnlinePlayers = () => {
     return (
       <div
-        className="p-4 bg-blue-200 rounded-lg mt-16 w-[550px] h-[500px]"
+        className="p-4 bg-blue-200 rounded-lg mt-16 w-[550px] h-full font-sans text-xl"
         style={{ maxHeight: "400px", overflowY: "auto" }}
       >
         <h3 className="text-lg font-semibold text-emerald-900">Online Players:</h3>
@@ -106,7 +104,7 @@ const Lobby = () => {
             .filter(([userName, gameId]) => gameId === game_id)
             .map(([userName, gameId], index) => (
               <li key={userName} className="text-md text-gray-700">
-                Player {index + 1}: {userName} {index==0 ? " 👑 (host)" : ""}
+                Player {index + 1}: {userName} {index == 0 ? " 👑 (host)" : ""}
               </li>
             ))}
         </ul>
@@ -158,8 +156,8 @@ const Lobby = () => {
     display: "inline-block", // This makes the div size fit its content
     textAlign: "center", // Center the text inside the div
 
-    border: "2px solid #000", /* Set the border and its properties */
-    borderRadius: "10px" /* Adjust the value to control the roundness of corners */  
+    border: "2px solid #000" /* Set the border and its properties */,
+    borderRadius: "10px" /* Adjust the value to control the roundness of corners */,
   };
 
   const containerStyle = {
