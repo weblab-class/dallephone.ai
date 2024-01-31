@@ -127,7 +127,13 @@ const Lobby = () => {
         </div>
       );
     }
-    return null;
+    return (
+      <div className="w-[400px] h-[40px] flex justify-center items-center h-screen">
+        <button >
+          
+        </button>
+      </div>
+    );
   };
 
   const handleStartGame = () => {
