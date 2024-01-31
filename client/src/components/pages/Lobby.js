@@ -162,6 +162,9 @@ const Lobby = () => {
     marginTop: "10px",
     display: "inline-block", // This makes the div size fit its content
     textAlign: "center", // Center the text inside the div
+
+    border: "2px solid #000", /* Set the border and its properties */
+    borderRadius: "10px" /* Adjust the value to control the roundness of corners */  
   };
 
   const containerStyle = {
