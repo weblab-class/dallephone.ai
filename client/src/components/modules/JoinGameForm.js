@@ -5,6 +5,7 @@ import { get, post } from "../../utilities";
 const JoinGameForm = ({ userId }) => {
   const [gameCode, setGameCode] = useState("");
   const [error, setError] = useState("");
+  const [messageVisible, setMessageVisible] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (event) => {
@@ -16,6 +17,15 @@ const JoinGameForm = ({ userId }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setMessageVisible(true);
+    setTimeout(() => {
+      setMessageVisible(false);
+    }, 3000);
+    if (!userId) {
+      setError("Please log in to join a game");
+      return;
+    }
+
     if (gameCode.length !== 4) {
       setError("Enter a 4 digit capital letter code");
       return;
@@ -60,7 +70,7 @@ const JoinGameForm = ({ userId }) => {
           Join
         </button>
       </form>
-      {error && <p className="error">{error}</p>}
+      {messageVisible && <p className="font-sans text-center">{error}</p>}
     </div>
   );
 };

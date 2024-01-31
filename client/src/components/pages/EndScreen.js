@@ -3,7 +3,6 @@ import { get, post } from "../../utilities.js";
 import { bgStyle } from "./styles.js";
 
 import "../../utilities.css";
-import "./EndScreen.css";
 
 /**
  * End Screen Page display of prompts and images in order

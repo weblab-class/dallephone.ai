@@ -13,7 +13,11 @@ module.exports = {
       12: "12px",
       24: "24px",
     },
-    extend: {},
+    extend: {
+      animation: {
+        "spin-slow": "spin 8s linear infinite",
+      },
+    },
     fontFamily: {
       sans: ["Itim", "sans-serif"],
     },
@@ -23,9 +27,6 @@ module.exports = {
       decimal: "decimal",
       square: "square",
       roman: "upper-roman",
-    },
-    animation: {
-      "spin-slow": "spin 8s linear infinite",
     },
   },
   plugins: [],

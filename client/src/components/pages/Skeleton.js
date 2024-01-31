@@ -8,6 +8,7 @@ import NewPrompt from "../modules/NewPromptInput";
 import Dalle from "../modules/Dalle";
 import Lobby from "../pages/Lobby";
 import JoinGameForm from "../modules/JoinGameForm";
+import CreateGame from "../modules/CreateGame";
 import { useParams, useNavigate, Link } from "react-router-dom"; // Import useNavigate
 import { socket } from "../../client-socket.js";
 
@@ -19,20 +20,6 @@ import openAI from "../img/openAI.png";
 const GOOGLE_CLIENT_ID = "235996742175-sitk3csm3imr5ccgfb06f9a0f5pbbmg4.apps.googleusercontent.com";
 
 const Skeleton = ({ userId, handleLogin, handleLogout }) => {
-  const [prompt, setPrompt] = useState("");
-  const [triggerFetch, setTriggerFetch] = useState(false);
-  const navigate = useNavigate(); // For redirecting to the new game lobby
-
-  //Some dalle helper functions for
-  const handleInputChange = (event) => {
-    setPrompt(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setTriggerFetch(true);
-  };
-
   useEffect(() => {
     if (socket.id != undefined) {
       // If the user is logged in, emit the leaveLobby event
@@ -48,19 +35,6 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
       post("/api/updateGameId", body);
     }
   }, [userId]);
-
-  const createNewGame = async () => {
-    try {
-      const res = await post("/api/createNewGame");
-      const gameCode = res.gameCode;
-      if (gameCode) {
-        // Redirect to the new game lobby
-        navigate(`/lobby/${gameCode}`);
-      }
-    } catch (error) {
-      console.error("Error creating new game:", error);
-    }
-  };
 
   const bg = {
     backgroundImage: `url(${grid})`,
@@ -102,7 +76,9 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
     <div style={bg}>
       {/* Header Section */}
       <div style={headerStyle}>
-      <Link to="/" style={{ fontSize: "56px", marginTop: "100px" }}>DALL-E Phone</Link>
+        <Link to="/" style={{ fontSize: "56px", marginTop: "100px" }}>
+          DALL-E Phone
+        </Link>
       </div>
 
       <div style={googleButtonContainerStyle}>
@@ -132,18 +108,19 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
             <img
               src={openAI}
               alt="openai logo"
-              className="animate-spin-slow object-contain h-[280px] w-full "
+              className="animate-spin-slow object-contain h-[280px] w-full mb-12 p-8"
             />
-            <button className={buttonStyle} onClick={createNewGame}>
+            {/* <button className={buttonStyle} onClick={createNewGame}>
               Create New Game
-            </button>
+            </button> */}
+            <CreateGame userId={userId} />
           </div>
         </div>
         {/* How to play Panel */}
         <div className="border-4 border-emerald-200 w-1/4 py-4 px-8 h-full bg-gradient-to-b from-emerald-300 from-0% via-emerald-300 via-70% hover:shadow-2xl transition duration-300 ease-in-out">
           <h2 className="text-center text-2xl pb-4">How to Play</h2>
           <div className="flex items-center justify-center h-5/6">
-            <ul className="list-square space-y-3 text-teal-800 font-sans text-xl">
+            <ul className="list-square space-y-3 text-teal-800 px-8 font-sans text-2xl">
               <li>Invite your friends to a voice call</li>
               <li>Everybody must write a quirky sentence</li>
               <li>You're gonna receive a bizarre AI image</li>
@@ -159,9 +136,9 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
             <img
               src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTZodTYxenBxaDA0cDF5dW5oZHpuYm8yMDlicGM3ZDc4M3QzMXZ6NCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/iIv51yJF2tC800OUZi/giphy.gif"
               alt="ring gif"
-              className="object-contain h-[280px] w-full p-8"
+              className="object-contain h-[280px] w-full p-4 mb-12"
             />
-            <JoinGameForm />
+            <JoinGameForm userId={userId} />
           </div>
         </div>
       </div>
