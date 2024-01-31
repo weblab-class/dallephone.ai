@@ -68,17 +68,6 @@ module.exports = {
         io.emit("numPlayersUpdate", numPlayersWithCode);
       });
 
-      socket.on("checkHost", (props) => {
-        const user = getUserFromSocketID(props.socket_id);
-        const numPlayersWithCode = Object.values(lobbyUsers).filter(
-          (userCode) => userCode == props.game_id
-        ).length;
-        if (user) {
-          const isHost = lobbyUsers[user.name] === props.game_id && numPlayersWithCode === 1;
-          socket.emit("assignHost", { isHost: isHost });
-        }
-      });
-
       socket.on("startGame", (code) => {
         io.emit("gameStarted", code);
       });
@@ -89,8 +78,29 @@ module.exports = {
         if (user) {
           lobbyUsers[user.name] = props.game_id; // Add user to lobby
         }
+        
         io.emit("lobbyUsersUpdate", { lobbyUsers }); // Emit updated list to all clients
+      
+        // Find the first user in the lobby for the specific game
+        const firstUserInLobby = Object.keys(lobbyUsers).find(userName => lobbyUsers[userName] === props.game_id);
+      
+        if (firstUserInLobby) {
+          // Loop over all connected users to find the one with the same name as firstUserInLobby
+          const allConnectedUsers = getAllConnectedUsers();
+          const matchingUser = allConnectedUsers.find(connectedUser => connectedUser.name === firstUserInLobby);
+      
+          if (matchingUser) {
+            // If a matching user is found, get their socket using the userToSocketMap
+            const matchingUserSocket = userToSocketMap[matchingUser._id];
+            
+            if (matchingUserSocket) {
+              // Emit assignHost event with the first user found in the lobby
+              io.to(matchingUserSocket.id).emit("assignHost", { game_id: props.game_id });
+            }
+          }
+        }
       });
+      
 
       // Example event for a user leaving the lobby
       socket.on("leaveLobby", (props) => {

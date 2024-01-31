@@ -42,7 +42,7 @@ const App = () => {
       post("/api/initsocket", { socketid: socket.id });
     });
   };
- 
+
   const handleLogout = () => {
     setUserId(undefined);
     post("/api/logout");

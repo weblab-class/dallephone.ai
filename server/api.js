@@ -119,6 +119,10 @@ router.get("/openaikey", (req, res) => {
   res.send({ key: process.env.REACT_APP_OPENAI_API_KEY });
 });
 
+router.get("/getUser", (req, res) => {
+  res.send({ name: req.user.name });
+});
+
 router.get("/activeUsers", (req, res) => {
   res.send(socketManager.getAllConnectedUsers());
 });
