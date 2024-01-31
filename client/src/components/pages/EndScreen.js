@@ -9,8 +9,10 @@ const EndScreen = ({ ids, images, prompts, names }) => {
   const buttonStyle =
   "mx-auto text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-700 hover:to-purple-700 py-2 px-4 rounded shadow-md hover:shadow-lg transition duration-200 ease-in-out border-2 border-emerald-900 border-opacity-50 my-4 mb-8 block";
 
-  const speechBubbleStyle =
-    "bg-white rounded-lg shadow-md border border-gray-200 m-4 p-4 inline-block";
+  const speechBubbleStyle = `
+  bg-white rounded-lg shadow-md border border-gray-200 m-4 p-4 w-300 h-300`;
+
+
   const imageBubbleStyle = "p-4 m-4";
   const headerStyle = {
     display: "flex",
@@ -57,8 +59,8 @@ const EndScreen = ({ ids, images, prompts, names }) => {
       <div style={bubbleContainerStyle}>
         {filteredPrompts.map((prompt, index) => (
           <React.Fragment key={`fragment-${id}-${index}`}>
-            <div key={`prompt-${id}-${index}`} className={`${speechBubbleStyle} speech-bubble mr-2`}>
-              <p className="font-sans">
+            <div key={`prompt-${id}-${index}`} className={`${speechBubbleStyle} speech-bubble mr-2`} style={{ width: '300px', maxHeight: '100px', overflowY: 'auto' }}>
+              <p className="font-sans" style={{ textAlign: 'center' }}>
                 {index >= 1
                   ? `${names[prompt.creator]} guessed: ${prompt.content}`
                   : `${names[prompt.creator]} wrote: ${prompt.content}`}
