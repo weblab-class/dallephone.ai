@@ -116,14 +116,14 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
     // console.log("imageObjs", imageObjs);
     return imagePrompt !== undefined ? (
       <div style={bgStyle} className="p-8 flex justify-center items-center h-full">
-        <Dalle
+        {/* <Dalle
           prompt={imagePrompt.content}
           triggerFetch={true} // should this be always true?
           original={imagePrompt.original}
           addNewImage={addNewImage}
           game_id={game_id}
           shouldDisplay={false}
-        />
+        /> */}
         <LoadingGifs game_id={game_id} ids={ids} num_players={num_players} />;
       </div>
     ) : (

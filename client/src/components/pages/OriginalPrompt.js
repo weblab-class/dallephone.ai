@@ -51,7 +51,7 @@ const OriginalPrompt = ({ num_players, game_id }) => {
     }
   };
 
-  socket.on("allPromptsSubmitted", () => {
+  socket.on("allOriginalPromptsSubmitted", () => {
     get("/api/prompt/originalprompts", { game_id: game_id }).then((prompts) => {
       // console.log("all prompts received");
       // console.log(Object.keys(prompts));
@@ -69,6 +69,7 @@ const OriginalPrompt = ({ num_players, game_id }) => {
       }
       // setAllPromptsSubmitted(originalPrompts.length !== 0 && playerNum !== -1);
       if (allPromptsSubmitted) console.log(originalPrompts);
+      socket.off("allOriginalPromptsSubmitted");
     });
   });
 

@@ -30,7 +30,7 @@
 }
 
 .ellipsis::after {
-  content: "";
+  /* content: ""; */
   animation: dots 1s infinite;
   display: inline-block;
   width: 1em; /* Adjust width as needed */

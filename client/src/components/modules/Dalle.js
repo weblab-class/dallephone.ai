@@ -49,15 +49,19 @@ const Dalle = ({ prompt, triggerFetch, original, addNewImage, game_id, shouldDis
 
             // Now update the server after state has been updated
             const body = { original: original, content: newImageSrc, game_id: game_id };
-            post("/api/image", body).then((image) => {
+            await post("/api/image", body).then((image) => {
               addNewImage(image);
             });
           } catch (error) {
             console.error("Error fetching image:", error);
-            const body = { original: original, content: "https://i.ibb.co/0QH97dD/content-Filter.png", game_id: game_id };
-            post("/api/image", body).then((image) => {
+            const body = {
+              original: original,
+              content: "https://i.ibb.co/0QH97dD/content-Filter.png",
+              game_id: game_id,
+            };
+            await post("/api/image", body).then((image) => {
               addNewImage(image);
-            });   
+            });
             setImageSrc("https://i.ibb.co/0QH97dD/content-Filter.png");
           }
         };

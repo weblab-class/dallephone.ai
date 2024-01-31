@@ -27,7 +27,7 @@ const NewInput = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex justify-center p-2">
+    <form onSubmit={handleSubmit} className="flex justify-center p-2 mt-4">
       <input
         type="text"
         placeholder={props.defaultText}

@@ -66,6 +66,7 @@ module.exports = {
             const userSocket = userToSocketMap[user._id];
             if (userSocket) {
               userSocket.emit("allPromptsSubmitted");
+              userSocket.emit("allOriginalPromptsSubmitted");
             }
           }
           delete hasSubmittedPrompt[gameID];
@@ -93,7 +94,7 @@ module.exports = {
       });
 
       socket.on("getInGamePlayers", (code) => {
-        // Initialize an array to hold the socket IDs of players in the game      
+        // Initialize an array to hold the socket IDs of players in the game
         const allConnectedUsers = getAllConnectedUsers();
 
         const isMatchingUserExists = allConnectedUsers.some((connectedUser) => {
@@ -104,15 +105,14 @@ module.exports = {
           console.log("connectedUser.gameid", lobbyUsers[connectedUser.name]);
           console.log("code.game_id", code.game_id);
           const isGameCodeMatch = lobbyUsers[connectedUser.name] === code.game_id;
-      
+
           if (isSocketMatch && isGameCodeMatch) {
             // If a matching user is found, get their socket using the userToSocketMap
             return true;
           }
         });
-          return false;
+        return false;
       });
-      
 
       socket.on("startGame", (code) => {
         io.emit("gameStarted", code);
@@ -131,7 +131,7 @@ module.exports = {
         }
 
         io.emit("lobbyUsersUpdate", { lobbyUsers }); // Emit updated list to all clients
-        
+
         // Find the first user in the lobby for the specific game
         const firstUserInLobby = Object.keys(lobbyUsers).find(
           (userName) => lobbyUsers[userName] === props.game_id
