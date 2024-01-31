@@ -7,6 +7,7 @@ import { bgStyle, buttonClass } from "./styles.js";
 
 import "./Lobby.css";
 
+
 /**
  * Will need to get user ids of all players in the lobby from database
  * currently do not know how to do this, am just using dummy data right now
@@ -52,38 +53,23 @@ const Lobby = () => {
     };
 
     checkGameExistsAndUpdateUser();
-
     socket.on("gameStarted", (code) => {
       if (code === game_id) {
         navigate(`/game/${game_id}`);
       }
     });
-
+    
     socket.emit("joinLobby", { game_id: game_id, socket_id: socket.id });
 
-    console.log(socket.id);
-    socket.emit("checkHost", { game_id: game_id, socket_id: socket.id });
-
-    socket.on(
-      "assignHost",
-      (data) => {
-        if (data.isHost) {
+    socket.on("assignHost", (data) => {
+        if (data.game_id == game_id) {
           console.log("I am the host");
           setIsHost(true); // Set a state variable to track if the current user is the host
         }
-      },
-      []
+      }
     );
 
     socket.on("lobbyUsersUpdate", (data) => {
-      console.log("Received lobby users update:", data);
-      Object.entries(data["lobbyUsers"]) // Convert object to array of [userId, gameId]
-        .filter(([userName, gameId]) => gameId === game_id) // Corrected filter condition
-        .map(([userName, gameId], index) => (
-          <li key={userName}>
-            Player {index + 1}: {userName}
-          </li> // Render list item
-        ));
       setLobbyUsers(data); // Update the lobbyUsers state
 
       return () => {
@@ -109,7 +95,7 @@ const Lobby = () => {
             .filter(([userName, gameId]) => gameId === game_id)
             .map(([userName, gameId], index) => (
               <li key={userName} className="text-md text-gray-700">
-                Player {index + 1}: {userName}
+                Player {index + 1}: {userName} {index==0 ? " 👑 (host)" : ""}
               </li>
             ))}
         </ul>
