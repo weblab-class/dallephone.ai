@@ -100,7 +100,7 @@ const Lobby = () => {
   const renderOnlinePlayers = () => {
     return (
       <div
-        className="p-4 bg-blue-200 rounded-lg mt-16 w-[300px] h-[500px]"
+        className="p-4 bg-blue-200 rounded-lg mt-16 w-[550px] h-[500px]"
         style={{ maxHeight: "400px", overflowY: "auto" }}
       >
         <h3 className="text-lg font-semibold text-emerald-900">Online Players:</h3>
