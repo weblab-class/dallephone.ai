@@ -82,6 +82,16 @@ module.exports = {
         io.emit("numPlayersUpdate", numPlayersWithCode);
       });
 
+      socket.on("getNumPlayers2", (props) => {
+        // Filter the lobbyUsers to find users with the specified code
+        const numPlayersWithCode = Object.values(lobbyUsers).filter(
+          (userCode) => userCode === props.code
+        ).length;
+
+        // Emit the number of players with the specific code
+        io.to(props.socket_id).emit("numPlayersUpdate2", numPlayersWithCode);
+      });
+
       socket.on("startGame", (code) => {
         io.emit("gameStarted", code);
       });

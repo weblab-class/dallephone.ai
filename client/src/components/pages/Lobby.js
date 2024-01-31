@@ -27,6 +27,18 @@ const Lobby = () => {
   const navigate = useNavigate();
   const [isHost, setIsHost] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
+  const [oneEmit, setOneEmit] = useState(false); // New state for tracking lobby users
+
+  if(!oneEmit){
+    socket.emit("getNumPlayers2", {code:game_id, socket_id:socket.id});
+    socket.on("numPlayersUpdate2", (num) => {
+      console.log(num);
+      if (num>=8) {
+        navigate(`/lobbyFull`);
+      }
+    });
+    setOneEmit(true);
+  }
 
   useEffect(() => {
     const checkGameExistsAndUpdateUser = async () => {
@@ -39,7 +51,7 @@ const Lobby = () => {
           const started = await get("/api/gameStatus", { game_id: game_id });
           if (started.gameStarted) {
             navigate("/lobbyStarted");
-          } else {
+          } else {  
             setAuthenticated(true);
           }
         }
@@ -76,6 +88,7 @@ const Lobby = () => {
         socket.off("gameStarted");
         socket.off("checkHost");
         socket.off("joinLobby");
+        socket.off("numPlayersUpdate2");
       };
     });
   }, [game_id, navigate]);

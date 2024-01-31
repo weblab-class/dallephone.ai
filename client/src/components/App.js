@@ -11,6 +11,7 @@ import Lobby from "./pages/Lobby.js";
 import LobbyNotFound from "./pages/LobbyNotFound.js";
 import GameScreen from "./pages/GameScreen.js";
 import LobbyStarted from "./pages/LobbyStarted.js";
+import LobbyFull from "./pages/LobbyFull.js";
 
 import "../utilities.css";
 
@@ -63,6 +64,7 @@ const App = () => {
       />
       <Route path="/lobbyNotFound" element={<LobbyNotFound />} />
       <Route path="/lobbyStarted" element={<LobbyStarted />} />
+      <Route path="/lobbyFull" element={<LobbyFull />} />
       <Route path="/lobby/:game_id" element={<Lobby />} />
       <Route path="/game/:game_id" element={<GameScreen />} />
       <Route path="/endscreen" element={<EndScreen />} />
