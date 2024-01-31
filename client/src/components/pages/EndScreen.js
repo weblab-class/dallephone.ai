@@ -10,10 +10,11 @@ import "../../utilities.css";
  * Proptypes:
  * @param {array} prompts- 1D array of all prompt objects (Prompt has attributes of original, creator, content)
  * @param {array} images- 1D array of all image objects (Image has attributes of original, creator, content)
+ * @param {array} names - array ob objects mapping user_id to user name
  * @param {array} ids - function to handle submission of prompt
  */
 
-const EndScreen = ({ game_id, ids }) => {
+const EndScreen = ({ ids, images, prompts, names }) => {
   /**
    * For each id, show the prompts and images that have that id, in the order: prompts[0], images[0], prompts[1], images[1], etc.
    *
@@ -21,26 +22,9 @@ const EndScreen = ({ game_id, ids }) => {
    * @param {array} filteredPrompts- 1D array of all prompt objects with the given id
    * @param {array} filteredImages- 1D array of all image objects with the given id
    */
-  const [prompts, setPrompts] = useState([]);
-  const [images, setImages] = useState([]);
-  const [dataFetched, setDataFetched] = useState(false); // State to track if data has been fetched
-
-  if (!dataFetched) { // Only fetch data if it hasn't been fetched yet
-    get("/api/prompt/game", { game_id: game_id }).then((promptObjs) => {
-      setPrompts(promptObjs);
-    });
-    get("/api/image/game", { game_id: game_id }).then((imageObjs) => {
-      setImages(imageObjs);
-    });
-    const timer = setTimeout(() => {
-      setDataFetched(true); // This will stop further updates to 'data'
-    }, 22000); // 22000 ms = 22 seconds
-
-  }
-
   if (prompts.length > 0 && images.length > 0) {
     return (
-      <div style={bgStyle}>
+      <div style={bgStyle} className="bg-repeat bg-cover bg-fixed">
         <h1> DA BEAST</h1>
         {ids.map((id) => {
           const filteredPrompts = prompts.filter((prompt) => prompt.original === id);
@@ -66,7 +50,9 @@ const EndScreen = ({ game_id, ids }) => {
       </div>
     );
   } else {
-    return <div>Loading...</div>; // Or any other placeholder content
+    console.log("shit was not passed properly");
+    console.log("prompts", prompts);
+    console.log("images", images);
   }
 };
 

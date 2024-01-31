@@ -89,7 +89,6 @@ router.get("/prompt/original", (req, res) => {
 router.get("/prompt/game", (req, res) => {
   // fetches all prompts with a given game_id
   Prompt.find({ game_id: req.query.game_id }).then((prompts) => {
-    console.log("this log occurs at get(/prompt/game) api endpoint");
     res.send(prompts.sort((a, b) => a.time - b.time));
   });
 });
@@ -127,6 +126,12 @@ router.get("/activeUsers", (req, res) => {
   res.send(socketManager.getAllConnectedUsers());
 });
 
+router.get("/game/users", (req, res) => {
+  User.find({ gameid: req.query.game_id }).then((users) => {
+    res.send(users);
+  });
+});
+
 //Update GameID of user
 router.post("/updateGameId", (req, res) => {
   const userId = req.user._id; // Assuming you're getting the user's ID from the session
@@ -152,18 +157,17 @@ router.post("/updateGameId", (req, res) => {
 
 router.get("/gameStatus", (req, res) => {
   GameId.findOne({ code: req.query.game_id }).then((game) => {
-    res.send(game)
-  }); 
-});
-
-router.post("/updateGameStatus", (req, res) => {
-  console.log(req.body.game_id)
-  GameId.findOne({ code: req.body.game_id }).then((game) => {
-    game.gameStarted = true
-    game.save()
+    res.send(game);
   });
 });
 
+router.post("/updateGameStatus", (req, res) => {
+  // console.log(req.body.game_id)
+  GameId.findOne({ code: req.body.game_id }).then((game) => {
+    game.gameStarted = true;
+    game.save();
+  });
+});
 
 //Generate new game code
 const generateGameCode = () => {
@@ -191,7 +195,7 @@ router.post("/createNewGame", async (req, res) => {
 
     // Add the gameCode to the gameids collection and update the user's gameid
     // Assuming GameId is your model for the gameids collection
-    const newGameId = new GameId({ code: gameCode, creator: req.user._id, gameStarted: false});
+    const newGameId = new GameId({ code: gameCode, creator: req.user._id, gameStarted: false });
     await newGameId.save();
 
     // Update the user's gameid
@@ -206,10 +210,10 @@ router.post("/createNewGame", async (req, res) => {
 
 // Get all game IDs
 router.get("/getGameIDs", (req, res) => {
-  GameId.find({}, 'code -_id') // Selects only the 'code' field and excludes '_id'
+  GameId.find({}, "code -_id") // Selects only the 'code' field and excludes '_id'
     .then((gameIds) => {
       // Extract just the game codes from the documents
-      const codes = gameIds.map(gameId => gameId.code);
+      const codes = gameIds.map((gameId) => gameId.code);
       res.send(codes);
     })
     .catch((error) => {

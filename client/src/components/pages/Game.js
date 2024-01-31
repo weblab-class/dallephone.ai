@@ -5,7 +5,7 @@ import Dalle from "../modules/Dalle";
 import { bgStyle } from "./styles.js";
 
 import { socket } from "../../client-socket.js";
-import EndScreen from "./EndScreen.js";
+import LoadingGifs from "./LoadingGifs.js";
 
 /**
  *
@@ -71,9 +71,12 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
 
   socket.on("allPromptsSubmitted", () => {
     // update current original prompt, which rotates for everyone
-    const index = (currentIndex + 1) % num_players;
-    setCurrentOriginalPrompt(originalPrompts[index]);
-    setCurrentIndex(index); // how to make these run synchronously?
+    setImagePrompt(undefined);
+    if (imagePrompt === undefined) {
+      const index = (currentIndex + 1) % num_players;
+      setCurrentOriginalPrompt(originalPrompts[index]);
+      setCurrentIndex(index); // how to make these run synchronously?
+    }
   });
 
   // console log outputs to check if props are being passed correctly:
@@ -111,7 +114,7 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
     // const expectedEntries = num_players * num_players;
     // console.log("promptObjs", promptObjs);
     // console.log("imageObjs", imageObjs);
-    return (
+    return imagePrompt !== undefined ? (
       <div style={bgStyle} className="p-8 flex justify-center items-center h-full">
         <Dalle
           prompt={imagePrompt.content}
@@ -121,7 +124,11 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
           game_id={game_id}
           shouldDisplay={false}
         />
-        <EndScreen game_id={game_id} ids={ids} />;
+        <LoadingGifs game_id={game_id} ids={ids} num_players={num_players} />;
+      </div>
+    ) : (
+      <div style={bgStyle} className="text-center text-2xl">
+        Waiting to retrieve your image...
       </div>
     );
   }
