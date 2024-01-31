@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { get, post } from "../../utilities.js";
 import { bgStyle } from "./styles.js";
 
@@ -24,31 +24,31 @@ const EndScreen = ({ game_id, ids }) => {
    */
   const [prompts, setPrompts] = useState([]);
   const [images, setImages] = useState([]);
+  const [dataFetched, setDataFetched] = useState(false); // State to track if data has been fetched
 
-  get("/api/prompt/game", { game_id: game_id }).then((promptObjs) => {
-    setPrompts(promptObjs);
-  });
-  get("/api/image/game", { game_id: game_id }).then((imageObjs) => {
-    setImages(imageObjs);
-  });
+  if (!dataFetched) { // Only fetch data if it hasn't been fetched yet
+    get("/api/prompt/game", { game_id: game_id }).then((promptObjs) => {
+      setPrompts(promptObjs);
+    });
+    get("/api/image/game", { game_id: game_id }).then((imageObjs) => {
+      setImages(imageObjs);
+    });
+    const timer = setTimeout(() => {
+      setDataFetched(true); // This will stop further updates to 'data'
+    }, 22000); // 22000 ms = 22 seconds
+
+  }
 
   if (prompts.length > 0 && images.length > 0) {
     return (
       <div style={bgStyle}>
         <h1> DA BEAST</h1>
-
         {ids.map((id) => {
-          const filteredPrompts = Object.values(prompts).filter((prompt) => prompt.original === id);
-          const filteredImages = Object.values(images).filter((image) => image.original === id);
-
-          // console.log("prompts", prompts);
-          // console.log("images", images);
-          // console.log("ids", ids);
-          // console.log("filtered prompts", filteredPrompts);
-          // console.log("filtered images", filteredImages);
+          const filteredPrompts = prompts.filter((prompt) => prompt.original === id);
+          const filteredImages = images.filter((image) => image.original === id);
 
           return (
-            <>
+            <React.Fragment key={id}>
               {filteredPrompts.map((prompt, index) => (
                 <div key={`prompt-${id}-${index}`}>
                   <h3>Prompt Content:</h3>
@@ -61,11 +61,13 @@ const EndScreen = ({ game_id, ids }) => {
                   )}
                 </div>
               ))}
-            </>
+            </React.Fragment>
           );
         })}
       </div>
     );
+  } else {
+    return <div>Loading...</div>; // Or any other placeholder content
   }
 };
 
