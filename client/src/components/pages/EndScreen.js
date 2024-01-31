@@ -24,6 +24,9 @@ const EndScreen = ({ ids, images, prompts, names }) => {
    * @param {array} filteredImages- 1D array of all image objects with the given id
    */
 
+  const buttonStyle =
+  "mx-auto text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-700 hover:to-purple-700 py-2 px-4 rounded shadow-md hover:shadow-lg transition duration-200 ease-in-out border-2 border-emerald-900 border-opacity-50";
+
   const speechBubbleStyle =
     "bg-white rounded-lg shadow-md border border-gray-200 m-4 p-4 inline-block";
   const imageBubbleStyle = "p-4 m-4";
@@ -72,6 +75,11 @@ const EndScreen = ({ ids, images, prompts, names }) => {
             </React.Fragment>
           );
         })}
+        <Link to="/">
+        <button className={buttonStyle}>
+          Return to Home
+        </button>
+        </Link>
       </div>
     );
   } else {
