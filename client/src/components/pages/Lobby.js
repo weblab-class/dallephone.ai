@@ -172,7 +172,7 @@ const Lobby = () => {
   return (
     <div style={bgStyle} className="flex flex-col justify-center items-center h-screen w-screen">
       <div style={headerStyle}>
-        <Link to="/" style={{ fontSize: "56px", marginTop: "100px" }}>DALL-E Phone</Link>
+      <Link to="/" style={{ fontSize: "56px", marginTop: "100px" }}>DALL-E Phone</Link>
       </div>
       <div style={containerStyle}>
         <div style={divStyle}>Game ID: {game_id}</div>
