@@ -28,11 +28,11 @@ const Lobby = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [oneEmit, setOneEmit] = useState(false); // New state for tracking lobby users
 
-  if(!oneEmit){
-    socket.emit("getNumPlayers2", {code:game_id, socket_id:socket.id});
+  if (!oneEmit) {
+    socket.emit("getNumPlayers2", { code: game_id, socket_id: socket.id });
     socket.on("numPlayersUpdate2", (num) => {
       console.log(num);
-      if (num>=8) {
+      if (num >= 8) {
         navigate(`/lobbyFull`);
       }
     });
@@ -50,7 +50,7 @@ const Lobby = () => {
           const started = await get("/api/gameStatus", { game_id: game_id });
           if (started.gameStarted) {
             navigate("/lobbyStarted");
-          } else {  
+          } else {
             setAuthenticated(true);
           }
         }
@@ -95,7 +95,7 @@ const Lobby = () => {
   const renderOnlinePlayers = () => {
     return (
       <div
-        className="p-4 bg-blue-200 rounded-lg mt-16 w-[550px] h-full font-sans text-xl"
+        className="p-4 bg-gradient-to-b from-sky-200 to-teal-300 rounded-lg mt-16 w-[550px] h-full font-sans text-xl"
         style={{ maxHeight: "400px", overflowY: "auto" }}
       >
         <h3 className="text-lg font-semibold text-emerald-900">Online Players:</h3>
