@@ -13,8 +13,6 @@ import { socket } from "../../client-socket.js";
 
 import grid from "../../components/img/grid.svg";
 import logo from "../img/logo.jpg";
-import grid from "../../components/img/grid.svg";
-import logo from "../img/logo.jpg";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "235996742175-sitk3csm3imr5ccgfb06f9a0f5pbbmg4.apps.googleusercontent.com";
@@ -81,7 +79,7 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
 
   const panelStyle = {
     display: "flex",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     alignItems: "center",
     marginTop: "150px",
   };
@@ -125,14 +123,14 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
       {/* Panels Section */}
       <div style={panelStyle} className="flex flex-wrap">
         {/* Create New Game Panel */}
-        <div className="border-4 w-1/4 p-4 mr-2">
+        <div className="border-4 w-1/4 p-4 mr-8">
           <button className={buttonStyle} onClick={createNewGame}>
             Create New Game
           </button>
         </div>
         <div className="border-4 w-1/4 p-4">How to play</div>
         {/* Join Game Panel */}
-        <div className="border-4 w-1/4 p-4 ml-2">
+        <div className="border-4 w-1/4 p-4 ml-8">
           <JoinGameForm />
         </div>
       </div>
