@@ -5,17 +5,18 @@ import { socket } from "../../client-socket.js";
 import OriginalPrompt from "./OriginalPrompt.js";
 
 const GameScreen = () => {
-  const { game_id } = useParams();
-  const [numPlayers, setNumPlayers] = useState(0); // New state for tracking lobby users
-  const [authenticated, setAuthenticated] = useState(false);
-  const navigate = useNavigate();
-
-  socket.emit("getNumPlayers", game_id);
-  socket.on("numPlayersUpdate", (data) => {
+    const { game_id } = useParams();
+    const [numPlayers, setNumPlayers] = useState(0); // New state for tracking lobby users
+    const [authenticated, setAuthenticated] = useState(false);
+    const navigate = useNavigate();
+    
+    socket.emit("getNumPlayers", game_id);
+    socket.on("numPlayersUpdate", (data) => {
     console.log("Received num players update:", data);
     setNumPlayers(data);
-  });
+    });
 
+    
   useEffect(() => {
     const checkGameExistsAndUpdateUser = async () => {
       try {
@@ -24,13 +25,8 @@ const GameScreen = () => {
           navigate("/lobbyNotFound");
           return;
         } else {
-          const started = await get("/api/gameStatus", { game_id: game_id });
-          if (started.gameStarted) {
-            navigate("/lobbyStarted");
-          } else {
-            setAuthenticated(true);
-            post("/api/updateGameStatus", { game_id: game_id });
-          }
+          
+          
         }
       } catch (error) {
         console.error("Error:", error);
@@ -39,6 +35,15 @@ const GameScreen = () => {
     };
 
     checkGameExistsAndUpdateUser();
+
+    const flip=socket.emit("getInGamePlayers", {game_id:game_id, socket_id: socket.id});
+    if (!flip) {
+        navigate("/lobbyStarted");
+    } else {
+      setAuthenticated(true);
+      post("/api/updateGameStatus", { game_id: game_id });
+    }
+
   }, []);
 
   console.log(numPlayers);
