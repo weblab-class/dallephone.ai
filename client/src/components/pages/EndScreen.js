@@ -59,7 +59,7 @@ const EndScreen = ({ ids, images, prompts, names }) => {
           <React.Fragment key={`fragment-${id}-${index}`}>
             <div key={`prompt-${id}-${index}`} className={`${speechBubbleStyle} speech-bubble mr-2`}>
               <p className="font-sans">
-                {index === 1
+                {index >= 1
                   ? `${names[prompt.creator]} guessed: ${prompt.content}`
                   : `${names[prompt.creator]} wrote: ${prompt.content}`}
               </p>
