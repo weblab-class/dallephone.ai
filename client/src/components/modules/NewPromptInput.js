@@ -27,7 +27,7 @@ const NewInput = (props) => {
   };
 
   return (
-    <div className="flex justify-center p-2">
+    <form onSubmit={handleSubmit} className="flex justify-center p-2">
       <input
         type="text"
         placeholder={props.defaultText}
@@ -36,16 +36,14 @@ const NewInput = (props) => {
         className="shadow-lg shadow-slate-500/50 w-[512px] h-[64px] placeholder-center rounded-l-3xl border-y-2 border-l-2 border-emerald-700 text-emerald-950"
         style={{ textAlign: "center", fontSize: "1.7rem" }}
       />
-      <button
-        type="submit"
-        onClick={handleSubmit}
+      <input
+        type="image"
+        src={submitbutton}
         style={{ backgroundSize: "50% auto" }}
         className="rounded-r-3xl hover:bg-blue-500 shadow-lg shadow-slate-500/50
                 bg-center bg-no-repeat bg-slate-500 w-[68px] h-[64px] transform hover:scale-105 transition duration-300 border-y-2 border-r-2 border-emerald-700"
-      >
-        <img src={submitbutton} />
-      </button>
-    </div>
+      />
+    </form>
   );
 };
 
