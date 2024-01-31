@@ -136,9 +136,15 @@ const Lobby = () => {
 
   useEffect(() => {
     if (lobbyUsers["lobbyUsers"]) {
-      setNumPlayers(Object.keys(lobbyUsers["lobbyUsers"]).length);
+      // Filter the lobbyUsers based on the game_id
+      const filteredLobbyUsers = Object.entries(lobbyUsers["lobbyUsers"])
+        .filter(([userName, userGameId]) => userGameId === game_id)
+        .reduce((acc, [userName, userGameId]) => ({ ...acc, [userName]: userGameId }), {});
+  
+      // Set the numPlayers state to the count of filtered lobby users
+      setNumPlayers(Object.keys(filteredLobbyUsers).length);
     }
-  }, [lobbyUsers]);
+  }, [lobbyUsers, game_id]); // Adding game_id as a dependency to re-run the effect if it changes
 
   const headerStyle = {
     display: "flex",

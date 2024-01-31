@@ -10,12 +10,13 @@ const GameScreen = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-  socket.emit("getNumPlayers", game_id);
-  socket.on("numPlayersUpdate", (data) => {
-    console.log("Received num players update:", data);
-    setNumPlayers(data);
-  });
-
+  useEffect(() => {
+    socket.emit("getNumPlayers", {game_id: game_id, socket_id: socket.id});
+    socket.on("numPlayersUpdate", (data) => {
+      console.log("Received num players update:", data);
+      setNumPlayers(data);
+    });
+  }, []);
   useEffect(() => {
     const checkGameExistsAndUpdateUser = async () => {
       try {
