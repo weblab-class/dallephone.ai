@@ -42,6 +42,7 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
 
   // Get previous prompt to use for currently displayed Dalle image:
   useEffect(() => {
+    setEnteredPrompt(false);
     get("/api/prompt/original", {
       original: currentOriginalPrompt.original,
       game_id: game_id,
