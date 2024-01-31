@@ -17,6 +17,16 @@ module.exports = {
     fontFamily: {
       sans: ["Itim", "sans-serif"],
     },
+    listStyleType: {
+      none: "none",
+      disc: "disc",
+      decimal: "decimal",
+      square: "square",
+      roman: "upper-roman",
+    },
+    animation: {
+      "spin-slow": "spin 8s linear infinite",
+    },
   },
   plugins: [],
 };
