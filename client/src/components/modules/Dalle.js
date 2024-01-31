@@ -54,6 +54,11 @@ const Dalle = ({ prompt, triggerFetch, original, addNewImage, game_id, shouldDis
             });
           } catch (error) {
             console.error("Error fetching image:", error);
+            const body = { original: original, content: "https://i.ibb.co/0QH97dD/content-Filter.png", game_id: game_id };
+            post("/api/image", body).then((image) => {
+              addNewImage(image);
+            });   
+            setImageSrc("https://i.ibb.co/0QH97dD/content-Filter.png");
           }
         };
 

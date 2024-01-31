@@ -70,7 +70,6 @@ const Lobby = () => {
 
     socket.on("lobbyUsersUpdate", (data) => {
       setLobbyUsers(data); // Update the lobbyUsers state
-
       return () => {
         socket.off("lobbyUsersUpdate");
         socket.off("assignHost");
