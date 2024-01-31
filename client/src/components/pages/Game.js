@@ -57,7 +57,7 @@ const Game = ({ originalPrompts, playerNum, num_players, game_id }) => {
         content: prompt,
         game_id: game_id,
       }).then((promptObj) => {
-        socket.emit("submitPrompt");
+        socket.emit("submitPrompt", { senderID: socket.id, gameID: game_id });
         setEnteredPrompt(true);
         // setPromptObjs([...promptObjs, promptObj]); // maybe combine this to socket as callback?
       });

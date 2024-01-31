@@ -46,7 +46,7 @@ const OriginalPrompt = ({ num_players, game_id }) => {
       post("/api/prompt/original", { content: prompt, game_id: game_id }).then(() => {
         setEnteredPrompt(true);
         console.log("I submitted");
-        socket.emit("submitPrompt");
+        socket.emit("submitPrompt", { senderID: socket.id, gameID: game_id });
       });
     }
   };

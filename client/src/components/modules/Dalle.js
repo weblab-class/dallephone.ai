@@ -23,7 +23,7 @@ function getApiKey() {
 
 const Dalle = ({ prompt, triggerFetch, original, addNewImage, game_id, shouldDisplay = true }) => {
   //Will change "image" variable into what Dalle generates from {prompt}
-  console.log("DALLE PROMPT", prompt);
+  // console.log("DALLE PROMPT", prompt);
   const [imageSrc, setImageSrc] = useState("");
 
   useEffect(() => {

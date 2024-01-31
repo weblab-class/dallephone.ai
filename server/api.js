@@ -128,6 +128,8 @@ router.get("/activeUsers", (req, res) => {
 
 router.get("/game/users", (req, res) => {
   User.find({ gameid: req.query.game_id }).then((users) => {
+    console.log("game_id", req.query.game_id);
+    console.log("users", users);
     res.send(users);
   });
 });

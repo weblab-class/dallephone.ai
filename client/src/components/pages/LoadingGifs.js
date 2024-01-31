@@ -50,9 +50,9 @@ const LoadingGifs = ({ game_id, ids, num_players }) => {
   }
 
   if (promptsFetched && imagesFetched && namesFetched) {
-    console.log("prompts", prompts);
-    console.log("images", images);
-    console.log("names", names);
+    // console.log("prompts", prompts);
+    // console.log("images", images);
+    // console.log("names", names);
   }
 
   return promptsFetched && imagesFetched && namesFetched ? (

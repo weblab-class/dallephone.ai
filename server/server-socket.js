@@ -8,7 +8,9 @@ const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.connected[socketid];
 
-lobbyUsers = {};
+const lobbyUsers = {};
+const usersInLobby = {}; // given game_id, returns set of users. used to check if all users have submitted prompts
+const hasSubmittedPrompt = {}; // given game_id, returns set of users who have submitted prompts
 
 let activeUsers = new Set();
 
@@ -44,14 +46,29 @@ module.exports = {
     io.on("connection", (socket) => {
       console.log(`socket has connected ${socket.id}`);
 
-      socket.on("submitPrompt", () => {
-        const user = getUserFromSocketID(socket.id);
-        activeUsers.delete(user);
+      socket.on("submitPrompt", ({ senderID, gameID }) => {
+        const user = getUserFromSocketID(senderID);
+        if (user === undefined) {
+          console.log("user submitPrompt was not found, smth wrong with socket emit message");
+        }
+        if (gameID in hasSubmittedPrompt) {
+          hasSubmittedPrompt[gameID].add(user);
+        } else {
+          hasSubmittedPrompt[gameID] = new Set([user]);
+        }
 
-        if (activeUsers.size === 0) {
+        if (hasSubmittedPrompt[gameID].size === usersInLobby[gameID].size) {
           // once all players have submitted a prompt
-          io.emit("allPromptsSubmitted");
-          activeUsers = new Set(getAllConnectedUsers());
+          console.log("game_id", gameID);
+          console.log("hasSubmittedPrompt", hasSubmittedPrompt);
+          console.log("usersInLobby", usersInLobby);
+          for (const user of usersInLobby[gameID]) {
+            const userSocket = userToSocketMap[user._id];
+            if (userSocket) {
+              userSocket.emit("allPromptsSubmitted");
+            }
+          }
+          delete hasSubmittedPrompt[gameID];
         }
       });
 
@@ -74,6 +91,11 @@ module.exports = {
         const user = getUserFromSocketID(props.socket_id);
         if (user) {
           lobbyUsers[user.name] = props.game_id; // Add user to lobby
+          if (props.game_id in usersInLobby) {
+            usersInLobby[props.game_id].add(user);
+          } else {
+            usersInLobby[props.game_id] = new Set([user]);
+          }
         }
 
         io.emit("lobbyUsersUpdate", { lobbyUsers }); // Emit updated list to all clients
@@ -105,7 +127,8 @@ module.exports = {
       // Example event for a user leaving the lobby
       socket.on("leaveLobby", (props) => {
         const user = getUserFromSocketID(props);
-        if (user) {
+        if (user !== undefined && user.name in lobbyUsers) {
+          usersInLobby[lobbyUsers[user.name]].delete(user);
           delete lobbyUsers[user.name]; // Remove user from lobby
         }
         io.emit("lobbyUsersUpdate", { lobbyUsers }); // Emit updated list to all clients
@@ -116,11 +139,9 @@ module.exports = {
         removeUser(user, socket);
 
         // Remove user from lobby if they were in it
-        for (let userName in lobbyUsers) {
-          if (user != undefined && lobbyUsers[userName] === user.name) {
-            delete lobbyUsers[userName];
-            break;
-          }
+        if (user !== undefined && user.name in lobbyUsers) {
+          usersInLobby[lobbyUsers[user.name]].delete(user);
+          delete lobbyUsers[user.name];
         }
         io.emit("lobbyUsersUpdate", { lobbyUsers }); // Emit updated list to all clients
 
