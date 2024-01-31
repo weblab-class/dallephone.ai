@@ -13,6 +13,8 @@ import { socket } from "../../client-socket.js";
 
 import grid from "../../components/img/grid.svg";
 import logo from "../img/logo.jpg";
+import grid from "../../components/img/grid.svg";
+import logo from "../img/logo.jpg";
 
 //TODO: REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "235996742175-sitk3csm3imr5ccgfb06f9a0f5pbbmg4.apps.googleusercontent.com";
@@ -79,13 +81,13 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
 
   const panelStyle = {
     display: "flex",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     alignItems: "center",
     marginTop: "150px",
   };
 
   const buttonStyle =
-    "text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-700 hover:to-purple-700 font-bold py-2 px-4 rounded shadow-md hover:shadow-lg transition duration-200";
+    "text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-700 hover:to-purple-700 py-2 px-4 rounded shadow-md hover:shadow-lg transition duration-200 border-2 border-emerald-900 border-opacity-50";
 
   const googleButtonContainerStyle = {
     display: "flex",
@@ -121,16 +123,16 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
       </div>
 
       {/* Panels Section */}
-      <div style={panelStyle}>
+      <div style={panelStyle} className="flex flex-wrap">
         {/* Create New Game Panel */}
-        <div>
+        <div className="border-4 w-1/4 p-4 mr-2">
           <button className={buttonStyle} onClick={createNewGame}>
             Create New Game
           </button>
         </div>
-
+        <div className="border-4 w-1/4 p-4">How to play</div>
         {/* Join Game Panel */}
-        <div>
+        <div className="border-4 w-1/4 p-4 ml-2">
           <JoinGameForm />
         </div>
       </div>

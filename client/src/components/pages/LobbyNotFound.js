@@ -1,10 +1,11 @@
 import React from "react";
+import { bgStyle } from "./styles";
 
 const NotFound = () => {
   return (
-    <div>
-      <h1>404 Not Found</h1>
-      <p>The lobby that you tried to join does not exist.</p>
+    <div style={bgStyle} className="h-screen w-screen flex-col flex items-center justify-center">
+      <h1 className="text-center text-2xl">404 Not Found</h1>
+      <p className="text-center text-lg">The lobby that you tried to join does not exist.</p>
     </div>
   );
 };

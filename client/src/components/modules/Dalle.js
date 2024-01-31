@@ -66,10 +66,10 @@ const Dalle = ({ prompt, triggerFetch, original, addNewImage, game_id, shouldDis
     return imageSrc !== "" ? (
       <div
         style={{ backgroundImage: `url('${imageSrc}')` }}
-        className="rounded-3xl w-[600px] h-[601px] border-8 border-emerald-900 border-transparent border-opacity-50 shadow-md p-24 bg-contain bg-no-repeat bg-center"
+        className="flex justify-center items-center rounded-3xl w-[580px] h-[580px] border-8 border-emerald-900 border-transparent border-opacity-50 shadow-md p-4 bg-emerald-200 bg-contain bg-no-repeat bg-center"
       ></div>
     ) : (
-      <div className="rounded-3xl w-[600px] h-[601px] border-8 border-emerald-900 border-transparent border-opacity-75 shadow-lg p-24 flex justify-center items-center h-full bg-emerald-200">
+      <div className="rounded-3xl w-[580px] h-[580px] border-8 border-emerald-900 border-transparent border-opacity-75 shadow-lg p-24 flex justify-center items-center bg-emerald-200">
         <div className="text-center p-2 text-xl">Retrieving your image</div>
         <svg
           aria-hidden="true"

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { get, post } from "../../utilities.js";
+import { bgStyle } from "./styles.js";
 
 import "../../utilities.css";
 import "./EndScreen.css";
@@ -33,7 +34,7 @@ const EndScreen = ({ game_id, ids }) => {
 
   if (prompts.length > 0 && images.length > 0) {
     return (
-      <div>
+      <div style={bgStyle}>
         <h1> DA BEAST</h1>
 
         {ids.map((id) => {
