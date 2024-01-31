@@ -8,7 +8,7 @@ import NewPrompt from "../modules/NewPromptInput";
 import Dalle from "../modules/Dalle";
 import Lobby from "../pages/Lobby";
 import JoinGameForm from "../modules/JoinGameForm";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useParams, useNavigate, Link } from "react-router-dom"; // Import useNavigate
 import { socket } from "../../client-socket.js";
 
 import grid from "../../components/img/grid.svg";
@@ -99,7 +99,7 @@ const Skeleton = ({ userId, handleLogin, handleLogout }) => {
     <div style={bg}>
       {/* Header Section */}
       <div style={headerStyle}>
-        <span style={{ fontSize: "56px", marginTop: "100px" }}>DALL-E Phone</span>
+      <Link to="/" style={{ fontSize: "56px", marginTop: "100px" }}>DALL-E Phone</Link>
       </div>
 
       <div style={googleButtonContainerStyle}>
